@@ -3,26 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Legendary Detailing | Professional Auto Detailing</title>
-  <meta name="description" content="Give your vehicle legendary care with professional interior and exterior detailing from Legendary Detailing. Explore our services and request an appointment today.">
+  <title>Legendary Detailing | Professional Mobile Auto Detailing</title>
+  <meta name="description" content="Professional mobile auto detailing. We come to you. Exterior, interior and full detail packages from $20. Request your appointment today.">
   <meta name="theme-color" content="#0B0B0B">
   <meta name="color-scheme" content="dark">
 
-  <!-- Open Graph / social sharing -->
+  <!-- Social sharing. scripts/set-domain.sh rewrites these URLs when the custom domain is connected. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Legendary Detailing">
-  <meta property="og:title" content="Legendary Detailing | Professional Auto Detailing">
-  <meta property="og:description" content="Give your vehicle legendary care with professional interior and exterior detailing from Legendary Detailing. Explore our services and request an appointment today.">
+  <meta property="og:title" content="Legendary Detailing | Professional Mobile Auto Detailing">
+  <meta property="og:description" content="Professional mobile auto detailing. We come to you. Packages starting at $20. Request your appointment today.">
   <meta property="og:image" content="https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://michaelabatetsu.github.io/legendary-detailing/">
   <link rel="canonical" href="https://michaelabatetsu.github.io/legendary-detailing/">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/img/infiniti-convertible-1200.webp" imagesrcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w" imagesizes="100vw" fetchpriority="high">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/saira-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/img/infiniti-convertible-1200.webp" imagesrcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/styles.css">
 
   <script type="application/ld+json">
@@ -30,24 +31,38 @@
     "@context": "https://schema.org",
     "@type": "AutomotiveBusiness",
     "name": "Legendary Detailing",
-    "description": "Professional automotive detailing — interior, exterior and full vehicle detailing.",
+    "description": "Professional mobile auto detailing: exterior wash, interior detail, full detail and full detail packages, plus add-on services.",
+    "slogan": "Every Detail. Legendary Results.",
     "telephone": "+1-901-483-8862",
     "email": "xavierwade38@gmail.com",
-    "image": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg",
     "url": "https://michaelabatetsu.github.io/legendary-detailing/",
-    "slogan": "Every Detail. Legendary Results."
+    "image": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg",
+    "logo": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/logo-gold.webp",
+    "priceRange": "$20 - $140",
+    "currenciesAccepted": "USD",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Detailing packages",
+      "itemListElement": [
+        { "@type": "Offer", "name": "Exterior Wash", "price": "20", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "20", "priceCurrency": "USD" } },
+        { "@type": "Offer", "name": "Interior Detail", "price": "45", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "45", "priceCurrency": "USD" } },
+        { "@type": "Offer", "name": "Full Detail", "price": "80", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "80", "priceCurrency": "USD" } },
+        { "@type": "Offer", "name": "Full Detail Package", "price": "120", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "120", "priceCurrency": "USD" } }
+      ]
+    }
   }
   </script>
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 
   <!-- ============ NAVIGATION ============ -->
   <header class="nav" id="nav">
     <div class="nav__inner container">
-      <a href="#home" class="nav__brand" aria-label="Legendary Detailing — home">
-        <img src="assets/img/logo-gold.webp" alt="Legendary Detailing" width="635" height="285">
+      <a href="#home" class="nav__brand" aria-label="Legendary Detailing, back to top">
+        <img src="assets/img/logo-gold-240.webp" srcset="assets/img/logo-gold-240.webp 240w, assets/img/logo-gold-480.webp 480w" sizes="120px" alt="Legendary Detailing" width="635" height="285">
       </a>
       <nav class="nav__links" id="nav-links" aria-label="Primary">
         <a href="#home">Home</a>
@@ -60,7 +75,7 @@
       <a href="tel:+19014838862" class="nav__phone" aria-label="Call Legendary Detailing at (901) 483-8862">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
       </a>
-      <button class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+      <button class="nav__toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span>
       </button>
     </div>
@@ -70,185 +85,229 @@
 
     <!-- ============ 1. HERO ============ -->
     <section class="hero" id="home" aria-labelledby="hero-title">
-      <div class="hero__media">
+      <div class="hero__media" id="hero-media">
         <img src="assets/img/infiniti-convertible-1200.webp"
-             srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w"
-             sizes="100vw" alt="Deep red Infiniti convertible with a high-gloss finish after a Legendary Detailing appointment"
+             srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w"
+             sizes="100vw" alt="Deep red Infiniti convertible with a mirror-like gloss after a Legendary Detailing detail"
              width="1500" height="2000" fetchpriority="high">
+        <span class="hero__glint" aria-hidden="true"></span>
       </div>
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="container hero__content">
-        <p class="eyebrow reveal"><span class="eyebrow__line"></span>Your ride deserves legendary care.</p>
-        <h1 id="hero-title" class="hero__title reveal">
-          Every Detail.<br><span class="gold">Legendary</span> Results.
+        <p class="hero__eyebrow load-in" style="--i:0">Professional mobile auto detailing</p>
+        <h1 id="hero-title" class="hero__title">
+          <span class="line"><span class="gloss" style="--i:1">Every Detail.</span></span>
+          <span class="line"><span class="gloss gloss--gold" style="--i:2">Legendary</span></span>
+          <span class="line"><span class="gloss" style="--i:3">Results.</span></span>
         </h1>
-        <p class="hero__sub reveal">Premium automotive detailing with an uncompromising commitment to quality, precision, and attention to detail.</p>
-        <div class="hero__actions reveal">
+        <p class="hero__sub">Premium automotive detailing with an uncompromising commitment to quality, precision, and attention to detail.</p>
+        <ul class="hero__facts load-in" style="--i:5">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg>We come to you</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tag"/></svg>Packages from $20</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"/></svg>Satisfaction guaranteed</li>
+        </ul>
+        <div class="hero__actions load-in" style="--i:6">
           <a href="#book" class="btn btn--gold btn--lg">Book Your Detail</a>
           <a href="#services" class="btn btn--ghost btn--lg">Explore Our Services</a>
         </div>
-        <a href="tel:+19014838862" class="hero__call reveal">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
-          <span>Call <strong>(901) 483-8862</strong></span>
-        </a>
+        <div class="hero__contact load-in" style="--i:7">
+          <p class="hero__accent">Your ride deserves legendary care.</p>
+          <div class="hero__links">
+            <a href="tel:+19014838862"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Call (901) 483-8862</a>
+            <a href="sms:+19014838862?&amp;body=Hi%20Legendary%20Detailing!%20I%27d%20like%20to%20book%20a%20detail." data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text us</a>
+          </div>
+        </div>
       </div>
       <a href="#about" class="hero__scroll" aria-label="Scroll to learn more"><span></span></a>
     </section>
 
+    <!-- Tagline band (from the Legendary Detailing flyer) -->
+    <div class="band">
+      <p class="sr-only">Cleaner. Shinier. Legendary.</p>
+      <div class="band__track" aria-hidden="true">
+        <span>Cleaner.</span><span>Shinier.</span><span class="gold">Legendary.</span><span>We come to you.</span>
+        <span>Cleaner.</span><span>Shinier.</span><span class="gold">Legendary.</span><span>We come to you.</span>
+        <span>Cleaner.</span><span>Shinier.</span><span class="gold">Legendary.</span><span>We come to you.</span>
+        <span>Cleaner.</span><span>Shinier.</span><span class="gold">Legendary.</span><span>We come to you.</span>
+      </div>
+    </div>
+
     <!-- ============ 2. ABOUT ============ -->
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="container about__grid">
-        <figure class="about__media reveal">
-          <img src="assets/img/porsche-macan-720.webp"
-               srcset="assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-full.webp 1125w"
-               sizes="(min-width: 960px) 40vw, 100vw"
-               alt="Black Porsche Macan detailed by Legendary Detailing, gleaming in the sun"
-               width="1125" height="1500" loading="lazy" decoding="async">
-          <figcaption>Porsche Macan — detailed by Legendary Detailing</figcaption>
+        <figure class="about__media">
+          <div class="wipe">
+            <img src="assets/img/porsche-macan-720.webp"
+                 srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-828.webp 828w, assets/img/porsche-macan-full.webp 1125w"
+                 sizes="(min-width: 1240px) 470px, (min-width: 960px) 40vw, calc(100vw - 32px)"
+                 alt="Black Porsche Macan detailed by Legendary Detailing, gleaming in the sun"
+                 width="1125" height="1500" loading="lazy" decoding="async">
+          </div>
+          <figcaption>Porsche Macan, detailed by Legendary Detailing</figcaption>
         </figure>
         <div class="about__copy">
-          <p class="kicker reveal">About Legendary Detailing</p>
-          <h2 id="about-title" class="h2 reveal">Not just clean.<br><span class="gold">Legendary.</span></h2>
-          <div class="rule reveal"></div>
+          <h2 id="about-title" class="h2 reveal">Not just clean.<br>Legendary.</h2>
           <p class="lead reveal">A quick wash makes a car look clean for a day. A proper detail makes it look cared for.</p>
-          <p class="reveal">Legendary Detailing exists for drivers who notice the difference. Every vehicle that comes to us gets a meticulous, hands-on approach — the kind of care that shows up in the depth of the paint, the clarity of the glass, and the way the cabin feels the moment you sit down.</p>
-          <p class="reveal">We take real pride in our workmanship. Our focus is simple: bring out the best possible appearance in every vehicle we touch, treat your car with the respect it deserves, and make sure you're genuinely satisfied when you pick up your keys.</p>
-          <ul class="about__points reveal">
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Meticulous attention to detail</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Professional automotive care</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Pride in every finish</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Your satisfaction comes first</li>
+          <p class="reveal">Legendary Detailing is a professional mobile auto detailing service built for drivers who notice the difference. We bring the detail to you, and every vehicle gets the same meticulous, hands-on approach: the kind of care that shows in the depth of the paint, the clarity of the glass, and the way the cabin feels the moment you sit down.</p>
+          <p class="reveal">We take real pride in our workmanship. The goal is simple: bring out the best possible appearance in every vehicle, treat your car with the respect it deserves, and make sure you're genuinely satisfied when we hand back your keys.</p>
+          <ul class="pillars reveal">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Mobile service</strong>We come to you.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-drop"/></svg><span><strong>Premium products</strong>Quality care for every surface.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eye"/></svg><span><strong>Attention to every detail</strong>Nothing gets rushed.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"/></svg><span><strong>Satisfaction guaranteed</strong>Your approval is the finish line.</span></li>
           </ul>
           <a href="#book" class="btn btn--gold reveal">Request an Appointment</a>
         </div>
       </div>
     </section>
 
-    <!-- ============ 3. SERVICES ============
-         To edit a service: change the image, title, and description inside a <article class="service">.
-         To add one: copy an entire <article class="service"> block. -->
+    <!-- ============ 3. SERVICES & PRICING ============
+         Prices and inclusions match the Legendary Detailing flyer.
+         To change a price: edit it here AND in the matching <input data-price> in the booking form. -->
     <section class="section services" id="services" aria-labelledby="services-title">
       <div class="container">
         <header class="section-head">
-          <p class="kicker reveal">Detailing Services</p>
-          <h2 id="services-title" class="h2 reveal">Care for every <span class="gold">surface.</span></h2>
-          <p class="section-head__sub reveal">Every vehicle is different. Choose the service that fits yours — or tell us exactly what you need and we'll build a quote around it.</p>
+          <h2 id="services-title" class="h2 reveal">Detailing services</h2>
+          <p class="section-head__sub reveal">Clear starting prices, real care. Pick a package, add what you need, and we'll bring it to you.</p>
         </header>
 
-        <div class="services__grid">
-          <article class="service reveal">
-            <div class="service__media">
-              <img src="assets/img/infiniti-finish.webp" alt="High-gloss reflections on the hood and front fender of a detailed Infiniti" width="1000" height="650" loading="lazy" decoding="async">
+        <div class="menu">
+          <article class="pkg reveal" id="pkg-exterior">
+            <div class="pkg__media wipe"><img src="assets/img/infiniti-finish-480.webp" srcset="assets/img/infiniti-finish-480.webp 480w, assets/img/infiniti-finish.webp 1000w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Glossy hood and front fender of a detailed Infiniti" width="1000" height="650" loading="lazy" decoding="async"></div>
+            <div class="pkg__body">
+              <h3 class="pkg__title">Exterior Wash</h3>
+              <p class="pkg__desc">Give your vehicle a refreshed, polished appearance with careful attention to exterior surfaces and finish.</p>
+              <ul class="pkg__list">
+                <li>Automatic wash</li><li>Wheel &amp; tire cleaning</li><li>Tire shine</li><li>Streak-free windows</li>
+              </ul>
             </div>
-            <div class="service__body">
-              <span class="service__num">01</span>
-              <h3 class="service__title">Exterior Detailing</h3>
-              <span class="service__line" aria-hidden="true"></span>
-              <p>Give your vehicle a refreshed, polished appearance with careful attention to exterior surfaces and finish.</p>
-              <p class="service__price">Contact for Pricing</p>
-              <a href="#book" class="btn btn--outline btn--block" data-service="Exterior Detailing">Request a Quote</a>
-            </div>
-          </article>
-
-          <article class="service reveal">
-            <div class="service__media">
-              <img src="assets/img/audi-r8-cabin.webp" alt="Quilted black leather seat inside a detailed Audi R8" width="860" height="860" loading="lazy" decoding="async">
-            </div>
-            <div class="service__body">
-              <span class="service__num">02</span>
-              <h3 class="service__title">Interior Detailing</h3>
-              <span class="service__line" aria-hidden="true"></span>
-              <p>Refresh your vehicle's interior with detailed cleaning focused on restoring a comfortable, clean driving environment.</p>
-              <p class="service__price">Contact for Pricing</p>
-              <a href="#book" class="btn btn--outline btn--block" data-service="Interior Detailing">Request a Quote</a>
+            <div class="pkg__price">
+              <p><span class="pkg__from">Starting at</span><span class="pkg__amount">$20</span></p>
+              <a href="#book" class="btn btn--outline" data-package="Exterior Wash">Book Exterior Wash</a>
             </div>
           </article>
 
-          <article class="service reveal">
-            <div class="service__media">
-              <img src="assets/img/porsche-macan-720.webp" alt="Black Porsche Macan after a full detail" width="720" height="960" loading="lazy" decoding="async" style="object-position: 50% 38%">
+          <article class="pkg reveal" id="pkg-interior">
+            <div class="pkg__media wipe"><img src="assets/img/audi-r8-cabin-480.webp" srcset="assets/img/audi-r8-cabin-480.webp 480w, assets/img/audi-r8-cabin.webp 860w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Quilted black leather seat inside a detailed Audi R8" width="860" height="860" loading="lazy" decoding="async"></div>
+            <div class="pkg__body">
+              <h3 class="pkg__title">Interior Detail</h3>
+              <p class="pkg__desc">Refresh your vehicle's interior with detailed cleaning focused on restoring a comfortable, clean driving environment.</p>
+              <ul class="pkg__list">
+                <li>Vacuum</li><li>Wipe down all surfaces</li><li>Clean door panels</li><li>Clean windows</li><li>Trash removal</li>
+              </ul>
             </div>
-            <div class="service__body">
-              <span class="service__num">03</span>
-              <h3 class="service__title">Full Vehicle Detailing</h3>
-              <span class="service__line" aria-hidden="true"></span>
-              <p>Comprehensive interior and exterior care designed to give your vehicle an impressive overall appearance.</p>
-              <p class="service__price">Contact for Pricing</p>
-              <a href="#book" class="btn btn--outline btn--block" data-service="Full Vehicle Detailing">Request a Quote</a>
+            <div class="pkg__price">
+              <p><span class="pkg__from">Starting at</span><span class="pkg__amount">$45</span></p>
+              <a href="#book" class="btn btn--outline" data-package="Interior Detail">Book Interior Detail</a>
             </div>
           </article>
 
-          <article class="service reveal">
-            <div class="service__media">
-              <img src="assets/img/audi-r8-wheel.webp" alt="Audi R8 wheel and red brake caliper, freshly detailed" width="600" height="600" loading="lazy" decoding="async">
+          <article class="pkg reveal" id="pkg-full">
+            <div class="pkg__media wipe"><img src="assets/img/porsche-macan-480.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Black Porsche Macan after a full detail" width="720" height="960" loading="lazy" decoding="async" style="object-position: 50% 38%"></div>
+            <div class="pkg__body">
+              <h3 class="pkg__title">Full Detail</h3>
+              <p class="pkg__desc">Comprehensive interior and exterior care designed to give your vehicle an impressive overall appearance.</p>
+              <ul class="pkg__list">
+                <li>Exterior Wash</li><li>Interior Detail</li><li>Tire shine</li><li>Windows inside &amp; out</li>
+              </ul>
             </div>
-            <div class="service__body">
-              <span class="service__num">04</span>
-              <h3 class="service__title">Custom Detailing</h3>
-              <span class="service__line" aria-hidden="true"></span>
-              <p>Looking for something specific? Contact Legendary Detailing to discuss your vehicle's needs and request a personalized quote.</p>
-              <p class="service__price">Personalized Quote</p>
-              <a href="#book" class="btn btn--outline btn--block" data-service="Custom Detailing">Request a Quote</a>
+            <div class="pkg__price">
+              <p><span class="pkg__from">Starting at</span><span class="pkg__amount">$80</span></p>
+              <p class="pkg__note">SUVs &amp; trucks +$20</p>
+              <a href="#book" class="btn btn--outline" data-package="Full Detail">Book Full Detail</a>
+            </div>
+          </article>
+
+          <article class="pkg pkg--feature reveal" id="pkg-package">
+            <div class="pkg__media wipe"><img src="assets/img/audi-r8-wheel-480.webp" srcset="assets/img/audi-r8-wheel-480.webp 480w, assets/img/audi-r8-wheel.webp 600w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Audi R8 wheel and red brake caliper, freshly detailed" width="600" height="600" loading="lazy" decoding="async"></div>
+            <div class="pkg__body">
+              <p class="pkg__badge">Our most complete package</p>
+              <h3 class="pkg__title">Full Detail Package</h3>
+              <p class="pkg__desc">Everything in the Full Detail, finished with buffing and protection for a deeper, longer-lasting shine.</p>
+              <ul class="pkg__list">
+                <li>Full Detail</li><li>Buffing</li><li>UV protectant</li><li>Rain repellent</li>
+              </ul>
+            </div>
+            <div class="pkg__price">
+              <p><span class="pkg__from">Starting at</span><span class="pkg__amount">$120</span></p>
+              <p class="pkg__note">SUVs &amp; trucks +$20</p>
+              <a href="#book" class="btn btn--gold" data-package="Full Detail Package">Book the Package</a>
             </div>
           </article>
         </div>
+
+        <div class="addons reveal" aria-labelledby="addons-title">
+          <h3 id="addons-title" class="addons__title">Add-on services</h3>
+          <ul class="addons__list">
+            <li><span>Buffing</span><strong>$20</strong></li>
+            <li><span>UV protection</span><strong>$15</strong></li>
+            <li><span>Rain repellent</span><strong>$15</strong></li>
+            <li><span>Handwash</span><strong>+$25</strong></li>
+          </ul>
+        </div>
+
+        <article class="custom reveal" id="pkg-custom">
+          <div>
+            <h3 class="custom__title">Custom Detailing</h3>
+            <p>Looking for something specific? Contact Legendary Detailing to discuss your vehicle's needs and request a personalized quote.</p>
+          </div>
+          <a href="#book" class="btn btn--outline" data-package="Custom Detailing">Request a Quote</a>
+        </article>
+        <p class="services__fine reveal">Prices are starting prices. Your final price is confirmed before your appointment, based on your vehicle's size and condition.</p>
       </div>
     </section>
 
     <!-- ============ 4. OUR WORK (GALLERY) ============
-         To add a photo: put the image in assets/img/ and copy one <figure class="tile"> block.
-         data-full = the large image opened in the full-screen viewer. -->
+         To add a photo: put it in assets/img/ and copy one <figure class="tile"> block.
+         data-full is the large image opened in the full-screen viewer. -->
     <section class="section work" id="work" aria-labelledby="work-title">
       <div class="container">
         <header class="section-head section-head--split">
-          <div>
-            <p class="kicker reveal">Our Work</p>
-            <h2 id="work-title" class="h2 reveal">The results speak <br class="hide-sm">for <span class="gold">themselves.</span></h2>
-          </div>
+          <h2 id="work-title" class="h2 reveal">The results speak for themselves.</h2>
           <p class="section-head__sub reveal">Attention to detail isn't just part of the process. It's what makes the difference.</p>
         </header>
 
         <div class="gallery" id="gallery">
-          <figure class="tile tile--tall reveal" data-full="assets/img/infiniti-convertible-full.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Infiniti convertible">
-              <img src="assets/img/infiniti-convertible-720.webp" srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-1200.webp 1200w" sizes="(min-width: 960px) 40vw, 100vw" alt="Deep red Infiniti convertible with mirror-like paint inside the detailing bay" width="720" height="960" loading="lazy" decoding="async">
+          <figure class="tile tile--tall" data-full="assets/img/infiniti-convertible-full.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Infiniti convertible">
+              <img src="assets/img/infiniti-convertible-720.webp" srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w" sizes="(min-width: 1240px) 470px, (min-width: 960px) 38vw, (min-width: 640px) 100vw, calc(100vw - 32px)" alt="Deep red Infiniti convertible with mirror-like paint, parked indoors" width="720" height="960" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Infiniti Convertible</span><em>Gloss that pops</em></figcaption>
+            <figcaption>Infiniti convertible</figcaption>
           </figure>
 
-          <figure class="tile tile--tall reveal" data-full="assets/img/audi-r8-v10-full.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Audi R8 V10">
-              <img src="assets/img/audi-r8-v10-720.webp" srcset="assets/img/audi-r8-v10-720.webp 720w, assets/img/audi-r8-v10-1200.webp 1200w" sizes="(min-width: 960px) 30vw, 100vw" alt="Blue Audi R8 V10 with doors and front trunk open during detailing" width="720" height="960" loading="lazy" decoding="async">
+          <figure class="tile tile--tall" data-full="assets/img/audi-r8-v10-full.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Audi R8 V10">
+              <img src="assets/img/audi-r8-v10-720.webp" srcset="assets/img/audi-r8-v10-720.webp 720w, assets/img/audi-r8-v10-828.webp 828w, assets/img/audi-r8-v10-1200.webp 1200w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Blue Audi R8 V10 with its doors and front trunk open during a detail" width="720" height="960" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Audi R8 V10</span><em>Inside &amp; out</em></figcaption>
+            <figcaption>Audi R8 V10</figcaption>
           </figure>
 
-          <figure class="tile tile--tall reveal" data-full="assets/img/porsche-macan-full.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Porsche Macan">
-              <img src="assets/img/porsche-macan-720.webp" srcset="assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-full.webp 1125w" sizes="(min-width: 960px) 30vw, 100vw" alt="Black Porsche Macan with clean wheels and glossy paint in a parking lot" width="720" height="960" loading="lazy" decoding="async">
+          <figure class="tile tile--tall" data-full="assets/img/porsche-macan-full.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Porsche Macan">
+              <img src="assets/img/porsche-macan-720.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-828.webp 828w, assets/img/porsche-macan-full.webp 1125w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Black Porsche Macan with clean wheels and glossy paint" width="720" height="960" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Porsche Macan</span><em>Deep black finish</em></figcaption>
+            <figcaption>Porsche Macan</figcaption>
           </figure>
 
-          <figure class="tile tile--wide reveal" data-full="assets/img/infiniti-finish.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Infiniti paint close-up">
-              <img src="assets/img/infiniti-finish.webp" alt="Close-up of reflections across the Infiniti's hood and fender" width="1000" height="650" loading="lazy" decoding="async">
+          <figure class="tile" data-full="assets/img/infiniti-finish.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Infiniti paint close-up">
+              <img src="assets/img/infiniti-finish-480.webp" srcset="assets/img/infiniti-finish-480.webp 480w, assets/img/infiniti-finish.webp 1000w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Close-up of reflections across the Infiniti's hood and fender" width="1000" height="650" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Infiniti Convertible</span><em>Paint up close</em></figcaption>
+            <figcaption>Infiniti paint, up close</figcaption>
           </figure>
 
-          <figure class="tile reveal" data-full="assets/img/audi-r8-wheel.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Audi R8 wheel close-up">
-              <img src="assets/img/audi-r8-wheel.webp" alt="Audi R8 wheel with red brake caliper" width="600" height="600" loading="lazy" decoding="async">
+          <figure class="tile" data-full="assets/img/audi-r8-wheel.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Audi R8 wheel close-up">
+              <img src="assets/img/audi-r8-wheel-480.webp" srcset="assets/img/audi-r8-wheel-480.webp 480w, assets/img/audi-r8-wheel.webp 600w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Audi R8 wheel with a red brake caliper" width="600" height="600" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Audi R8 V10</span><em>Wheel detail</em></figcaption>
+            <figcaption>Audi R8 wheel</figcaption>
           </figure>
 
-          <figure class="tile reveal" data-full="assets/img/porsche-wheel.webp">
-            <button class="tile__btn" aria-label="View full-size photo: Porsche Macan wheel close-up">
-              <img src="assets/img/porsche-wheel.webp" alt="Porsche Macan two-tone wheel and tire, freshly cleaned" width="565" height="340" loading="lazy" decoding="async">
+          <figure class="tile" data-full="assets/img/porsche-wheel.webp">
+            <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Porsche Macan wheel close-up">
+              <img src="assets/img/porsche-wheel-480.webp" srcset="assets/img/porsche-wheel-480.webp 480w, assets/img/porsche-wheel.webp 565w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Porsche Macan two-tone wheel and tire, freshly cleaned" width="565" height="340" loading="lazy" decoding="async">
             </button>
-            <figcaption><span>Porsche Macan</span><em>Wheels &amp; tires</em></figcaption>
+            <figcaption>Porsche Macan wheel</figcaption>
           </figure>
         </div>
 
@@ -261,31 +320,24 @@
 
     <!-- ============ 5. WHY LEGENDARY ============ -->
     <section class="section why" aria-labelledby="why-title">
-      <div class="container">
-        <header class="section-head section-head--center">
-          <p class="kicker reveal">The Difference</p>
-          <h2 id="why-title" class="h2 reveal">Why Legendary <span class="gold">Detailing?</span></h2>
-        </header>
-        <div class="why__grid">
+      <div class="container why__grid">
+        <h2 id="why-title" class="h2 reveal">Why Legendary Detailing?</h2>
+        <div class="why__list">
           <article class="feature reveal">
             <svg class="feature__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="12"/><path d="M30 30l10 10"/><path d="M16 21h10M21 16v10"/></svg>
-            <h3>Attention to Detail</h3>
-            <p>Every vehicle deserves thoughtful, meticulous care.</p>
+            <div><h3>Attention to detail</h3><p>Every vehicle deserves thoughtful, meticulous care.</p></div>
           </article>
           <article class="feature reveal">
             <svg class="feature__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5l15 6v11c0 10-6.5 17.5-15 21-8.5-3.5-15-11-15-21V11z"/><path d="M17 24l5 5 9-10"/></svg>
-            <h3>Professional Approach</h3>
-            <p>A focus on quality workmanship and excellent presentation.</p>
+            <div><h3>Professional approach</h3><p>A focus on quality workmanship and excellent presentation.</p></div>
           </article>
           <article class="feature reveal">
             <svg class="feature__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34h32M12 34v-7l4-9h16l4 9v7"/><path d="M12 27h24"/><circle cx="17" cy="34" r="3.5"/><circle cx="31" cy="34" r="3.5"/><path d="M34 6l1.5 3.5L39 11l-3.5 1.5L34 16l-1.5-3.5L29 11l3.5-1.5z"/></svg>
-            <h3>Personalized Service</h3>
-            <p>Detailing options tailored to each customer's vehicle and needs.</p>
+            <div><h3>Personalized service</h3><p>Detailing options tailored to each customer's vehicle and needs.</p></div>
           </article>
           <article class="feature reveal">
             <svg class="feature__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/><path d="M37 28l1.6 4.4L43 34l-4.4 1.6L37 40l-1.6-4.4L31 34l4.4-1.6z"/><path d="M11 30l1.2 3.3 3.3 1.2-3.3 1.2L11 39l-1.2-3.3-3.3-1.2 3.3-1.2z"/></svg>
-            <h3>Pride in Every Finish</h3>
-            <p>Bringing out the best possible appearance in every ride.</p>
+            <div><h3>Pride in every finish</h3><p>Bringing out the best possible appearance in every ride.</p></div>
           </article>
         </div>
       </div>
@@ -295,23 +347,22 @@
     <section class="section process" aria-labelledby="process-title">
       <div class="container">
         <header class="section-head section-head--center">
-          <p class="kicker reveal">How It Works</p>
-          <h2 id="process-title" class="h2 reveal">The Legendary <span class="gold">Experience</span></h2>
+          <h2 id="process-title" class="h2 reveal">The Legendary experience</h2>
         </header>
         <ol class="steps" id="steps">
           <li class="step reveal">
-            <span class="step__num">01</span>
-            <h3>Choose Your Service</h3>
+            <span class="step__num" aria-hidden="true">01</span>
+            <h3><span class="sr-only">Step 1: </span>Choose your service</h3>
             <p>Explore our detailing options and select the service that fits your needs.</p>
           </li>
           <li class="step reveal">
-            <span class="step__num">02</span>
-            <h3>Request Your Appointment</h3>
-            <p>Contact Legendary Detailing with your vehicle information and preferred appointment date.</p>
+            <span class="step__num" aria-hidden="true">02</span>
+            <h3><span class="sr-only">Step 2: </span>Request your appointment</h3>
+            <p>Contact Legendary Detailing with your vehicle information, location, and preferred appointment date.</p>
           </li>
           <li class="step reveal">
-            <span class="step__num">03</span>
-            <h3>Experience the Difference</h3>
+            <span class="step__num" aria-hidden="true">03</span>
+            <h3><span class="sr-only">Step 3: </span>Experience the difference</h3>
             <p>Get your vehicle professionally detailed and enjoy a refreshed appearance.</p>
           </li>
         </ol>
@@ -319,25 +370,18 @@
     </section>
 
     <!-- ============ 7. REVIEWS ============
-         Reviews are loaded from assets/js/reviews.js. Only add REAL, verified reviews there.
-         While that list is empty, visitors see an invitation to share feedback (no placeholder text).
-         Add ?editor to the URL (e.g. index.html?editor) to preview the review card layout. -->
-    <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
+         Hidden until real, verified reviews are added to assets/js/content.js.
+         Add ?editor to the URL to preview the review card layout. -->
+    <section class="section reviews" id="reviews" aria-labelledby="reviews-title" hidden>
       <div class="container">
         <header class="section-head section-head--center">
-          <p class="kicker reveal">Client Reviews</p>
-          <h2 id="reviews-title" class="h2 reveal">What Our Clients <span class="gold">Are Saying</span></h2>
+          <h2 id="reviews-title" class="h2">What our clients are saying</h2>
         </header>
-        <div class="reviews__grid" id="reviews-grid" hidden></div>
-        <div class="reviews__empty reveal" id="reviews-empty">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 12h28a3 3 0 013 3v16a3 3 0 01-3 3H22l-8 7v-7h-4a3 3 0 01-3-3V15a3 3 0 013-3z"/><path d="M17 23h14M17 28h8"/></svg>
-          <h3>Recently had your vehicle detailed?</h3>
-          <p>We'd love to hear about your experience. Your feedback helps other drivers find care they can trust.</p>
-          <a class="btn btn--outline" href="mailto:xavierwade38@gmail.com?subject=My%20Legendary%20Detailing%20Experience">Share Your Experience</a>
-        </div>
+        <div class="reviews__grid" id="reviews-grid"></div>
+        <p class="reviews__more" id="reviews-more" hidden></p>
         <template id="review-tpl">
           <figure class="review">
-            <div class="review__stars" aria-hidden="true"></div>
+            <div class="review__stars"></div>
             <blockquote class="review__text"></blockquote>
             <figcaption><span class="review__name"></span><span class="review__meta"></span></figcaption>
           </figure>
@@ -352,95 +396,151 @@
       </div>
       <div class="container book__grid">
         <div class="book__intro">
-          <p class="kicker reveal">Appointment Request</p>
-          <h2 id="book-title" class="h2 reveal">Your next detail <br><span class="gold">starts here.</span></h2>
-          <div class="rule reveal"></div>
+          <h2 id="book-title" class="h2 reveal">Your next detail <span class="gold">starts here.</span></h2>
           <p class="lead reveal">Ready to give your vehicle the attention it deserves? Reach out today to discuss your detailing needs and request an appointment.</p>
-          <p class="book__note reveal">Submitting this form sends a request — not a confirmed booking. We'll personally reach out to confirm availability, details, and pricing.</p>
+          <p class="book__note reveal">This form sends a request, not a confirmed booking. We'll reach out personally to confirm your time, location, and price.</p>
           <div class="book__direct reveal">
             <a href="tel:+19014838862" class="btn btn--ghost btn--lg">
               <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Call (901) 483-8862
             </a>
-            <a href="mailto:xavierwade38@gmail.com" class="book__email">
+            <a href="sms:+19014838862?&amp;body=Hi%20Legendary%20Detailing!%20Here%20are%20some%20photos%20of%20my%20vehicle%20for%20a%20quote." class="book__link" data-sms>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text a photo for a quick quote
+            </a>
+            <a href="mailto:xavierwade38@gmail.com" class="book__link">
               <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>xavierwade38@gmail.com
             </a>
           </div>
         </div>
 
         <div class="book__card reveal">
-          <!-- Form delivery: FormSubmit (https://formsubmit.co) forwards submissions to the email below.
-               The very first submission triggers a one-time activation email to that inbox — click "Activate" once. -->
-          <form id="booking-form" class="form" action="https://formsubmit.co/xavierwade38@gmail.com" method="POST" novalidate>
-            <input type="hidden" name="_subject" value="New Detail Request — Legendary Detailing Website">
+          <!-- Delivery: FormSubmit (formsubmit.co) emails every request to the address below.
+               The first submission sends a one-time "Activate Form" email to that inbox. Click it once. -->
+          <form id="booking-form" class="form" action="https://formsubmit.co/xavierwade38@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="New detail request from the Legendary Detailing website">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="Estimated Starting Price" id="f-estimate" value="">
+            <div class="hp" aria-hidden="true"><label for="f-honey">Leave this field empty</label><input id="f-honey" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
 
-            <div class="form__row">
+            <ol class="form__progress" aria-hidden="true">
+              <li class="is-active" data-step-dot="1"><span>1</span>Your detail</li>
+              <li data-step-dot="2"><span>2</span>Contact &amp; timing</li>
+            </ol>
+
+            <!-- Step 1 -->
+            <fieldset class="form__step is-active" data-step="1" id="step-1">
+              <legend class="form__legend">Step 1 of 2: Your detail</legend>
+
               <div class="field">
-                <label for="f-name">Full Name <span aria-hidden="true">*</span></label>
-                <input id="f-name" name="Full Name" type="text" autocomplete="name" required>
+                <span class="field__label" id="l-package">Package <span class="req" aria-hidden="true">*</span></span>
+                <div class="choices choices--pkg" role="radiogroup" aria-labelledby="l-package" aria-required="true" data-required="package">
+                  <label class="choice"><input type="radio" name="Package" value="Exterior Wash" required data-price="20" data-suv="0"><span class="choice__name">Exterior Wash</span><span class="choice__price">from $20</span></label>
+                  <label class="choice"><input type="radio" name="Package" value="Interior Detail" data-price="45" data-suv="0"><span class="choice__name">Interior Detail</span><span class="choice__price">from $45</span></label>
+                  <label class="choice"><input type="radio" name="Package" value="Full Detail" data-price="80" data-suv="20"><span class="choice__name">Full Detail</span><span class="choice__price">from $80</span></label>
+                  <label class="choice"><input type="radio" name="Package" value="Full Detail Package" data-price="120" data-suv="20" data-includes="Buffing,UV Protection,Rain Repellent"><span class="choice__name">Full Detail Package</span><span class="choice__price">from $120</span></label>
+                  <label class="choice choice--wide"><input type="radio" name="Package" value="Custom Detailing" data-price="" data-suv="0"><span class="choice__name">Custom Detailing</span><span class="choice__price">personalized quote</span></label>
+                </div>
+                <p class="field__error" id="e-package" hidden>Choose a package to continue.</p>
               </div>
-            </div>
-            <div class="form__row form__row--2">
+
               <div class="field">
-                <label for="f-phone">Phone Number <span aria-hidden="true">*</span></label>
-                <input id="f-phone" name="Phone" type="tel" autocomplete="tel" inputmode="tel" required>
+                <span class="field__label" id="l-vehicle-type">Vehicle type <span class="req" aria-hidden="true">*</span></span>
+                <div class="choices choices--pill" role="radiogroup" aria-labelledby="l-vehicle-type" aria-required="true" data-required="vehicle">
+                  <label class="choice"><input type="radio" name="Vehicle Type" value="Car" required><span class="choice__name">Car</span></label>
+                  <label class="choice"><input type="radio" name="Vehicle Type" value="SUV / Truck"><span class="choice__name">SUV / Truck</span></label>
+                  <label class="choice"><input type="radio" name="Vehicle Type" value="Other / Not sure"><span class="choice__name">Other</span></label>
+                </div>
+                <p class="field__error" id="e-vehicle" hidden>Choose your vehicle type.</p>
+              </div>
+
+              <div class="field">
+                <span class="field__label" id="l-addons">Add-ons <span class="field__opt">(optional)</span></span>
+                <div class="choices choices--addon" role="group" aria-labelledby="l-addons">
+                  <label class="choice"><input type="checkbox" name="Add-ons" value="Buffing" data-price="20"><span class="choice__name">Buffing</span><span class="choice__price">$20</span></label>
+                  <label class="choice"><input type="checkbox" name="Add-ons" value="UV Protection" data-price="15"><span class="choice__name">UV protection</span><span class="choice__price">$15</span></label>
+                  <label class="choice"><input type="checkbox" name="Add-ons" value="Rain Repellent" data-price="15"><span class="choice__name">Rain repellent</span><span class="choice__price">$15</span></label>
+                  <label class="choice"><input type="checkbox" name="Add-ons" value="Handwash" data-price="25"><span class="choice__name">Handwash</span><span class="choice__price">+$25</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="f-vehicle">Year, make &amp; model <span class="field__opt">(optional)</span></label>
+                <input id="f-vehicle" name="Vehicle" type="text" autocomplete="off" placeholder="e.g. 2021 Porsche Macan">
+              </div>
+
+              <div class="estimate" id="estimate" aria-live="polite">
+                <span class="estimate__label">Estimated starting price</span>
+                <span class="estimate__value" id="estimate-value">Choose a package</span>
+                <span class="estimate__note" id="estimate-note">Your final price is confirmed before your appointment.</span>
+              </div>
+
+              <button type="button" class="btn btn--gold btn--lg btn--block form__next" data-next>Continue</button>
+            </fieldset>
+
+            <!-- Step 2 -->
+            <fieldset class="form__step" data-step="2" id="step-2">
+              <legend class="form__legend">Step 2 of 2: Contact &amp; timing</legend>
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                  <input id="f-name" name="Full Name" type="text" autocomplete="name" required aria-describedby="e-name">
+                  <p class="field__error" id="e-name" hidden>Enter your full name.</p>
+                </div>
+                <div class="field">
+                  <label for="f-phone">Phone number <span class="req" aria-hidden="true">*</span></label>
+                  <input id="f-phone" name="Phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="e-phone">
+                  <p class="field__error" id="e-phone" hidden>Enter a 10-digit phone number.</p>
+                </div>
+              </div>
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label for="f-email">Email <span class="field__opt">(optional)</span></label>
+                  <input id="f-email" name="email" type="email" autocomplete="email" aria-describedby="e-email">
+                  <p class="field__error" id="e-email" hidden>Check the email address, or leave it blank.</p>
+                </div>
+                <div class="field">
+                  <label for="f-location">Where should we come? <span class="field__opt">(optional)</span></label>
+                  <input id="f-location" name="Service Location" type="text" autocomplete="address-line1" placeholder="Address or ZIP code">
+                </div>
+              </div>
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label for="f-date">Preferred date <span class="field__opt">(optional)</span></label>
+                  <input id="f-date" name="Preferred Date" type="date">
+                </div>
+                <div class="field">
+                  <label for="f-time">Preferred time <span class="field__opt">(optional)</span></label>
+                  <select id="f-time" name="Preferred Time">
+                    <option value="">No preference</option>
+                    <option>Morning</option>
+                    <option>Afternoon</option>
+                    <option>Evening</option>
+                  </select>
+                </div>
               </div>
               <div class="field">
-                <label for="f-email">Email Address <span aria-hidden="true">*</span></label>
-                <input id="f-email" name="email" type="email" autocomplete="email" required>
+                <label for="f-details">Anything else? <span class="field__opt">(optional)</span></label>
+                <textarea id="f-details" name="Additional Details" rows="3" placeholder="Pet hair, stains, problem areas, or anything you'd like us to know."></textarea>
               </div>
-            </div>
-            <div class="form__row form__row--3">
-              <div class="field">
-                <label for="f-year">Vehicle Year</label>
-                <input id="f-year" name="Vehicle Year" type="text" inputmode="numeric" maxlength="4" placeholder="2024">
+
+              <div class="form__summary" id="form-summary" aria-live="polite"></div>
+              <p class="form__error" id="form-error" role="alert" hidden></p>
+              <div class="form__actions">
+                <button type="button" class="btn btn--ghost form__back" data-back>Back</button>
+                <button type="submit" class="btn btn--gold btn--lg" id="form-submit"><span class="btn__label">Request My Detail</span></button>
               </div>
-              <div class="field">
-                <label for="f-make">Vehicle Make</label>
-                <input id="f-make" name="Vehicle Make" type="text" placeholder="Porsche">
-              </div>
-              <div class="field">
-                <label for="f-model">Vehicle Model</label>
-                <input id="f-model" name="Vehicle Model" type="text" placeholder="Macan">
-              </div>
-            </div>
-            <div class="form__row form__row--2">
-              <div class="field">
-                <label for="f-service">Requested Service <span aria-hidden="true">*</span></label>
-                <select id="f-service" name="Requested Service" required>
-                  <option value="" disabled selected>Select a service</option>
-                  <option>Exterior Detailing</option>
-                  <option>Interior Detailing</option>
-                  <option>Full Vehicle Detailing</option>
-                  <option>Custom Detailing</option>
-                  <option>Not sure — help me choose</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="f-date">Preferred Date</label>
-                <input id="f-date" name="Preferred Date" type="date">
-              </div>
-            </div>
-            <div class="form__row">
-              <div class="field">
-                <label for="f-details">Additional Details</label>
-                <textarea id="f-details" name="Additional Details" rows="4" placeholder="Tell us about your vehicle's condition, any problem areas, or what you'd like done."></textarea>
-              </div>
-            </div>
-            <p class="form__error" id="form-error" role="alert" hidden></p>
-            <button type="submit" class="btn btn--gold btn--lg btn--block" id="form-submit">
-              <span class="btn__label">Request My Detail</span>
-            </button>
-            <p class="form__fine">Fields marked * are required. Your information is only used to respond to your request.</p>
+              <p class="form__fine">Your information is only used to respond to your request.</p>
+            </fieldset>
           </form>
 
           <div class="form__success" id="form-success" hidden tabindex="-1">
-            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M15 24.5l6 6 12-13"/></svg>
-            <h3>Request Received</h3>
+            <svg viewBox="0 0 52 52" aria-hidden="true"><circle class="ring" cx="26" cy="26" r="24"/><path class="tick" d="M15 27l7.5 7.5L38 19"/></svg>
+            <h3>Request received</h3>
             <p>Thank you for contacting Legendary Detailing! We've received your request and will be in touch to discuss your appointment.</p>
-            <a href="tel:+19014838862" class="btn btn--outline">Need us sooner? Call (901) 483-8862</a>
+            <div class="form__success-actions">
+              <a href="sms:+19014838862?&amp;body=Hi%20Legendary%20Detailing!%20I%20just%20sent%20a%20request%20on%20your%20website.%20Here%20are%20photos%20of%20my%20vehicle." class="btn btn--outline" data-sms>Text us photos</a>
+              <a href="tel:+19014838862" class="btn btn--ghost">Call (901) 483-8862</a>
+            </div>
           </div>
         </div>
       </div>
@@ -450,30 +550,36 @@
     <section class="section faq" id="faq" aria-labelledby="faq-title">
       <div class="container faq__grid">
         <header class="section-head">
-          <p class="kicker reveal">FAQ</p>
-          <h2 id="faq-title" class="h2 reveal">Questions? <br><span class="gold">Answered.</span></h2>
-          <p class="section-head__sub reveal">Don't see your question here? Call <a href="tel:+19014838862">(901) 483-8862</a> and we'll be happy to help.</p>
+          <h2 id="faq-title" class="h2 reveal">Questions, answered.</h2>
+          <p class="section-head__sub reveal">Don't see your question? Call or text <a href="tel:+19014838862">(901) 483-8862</a>.</p>
         </header>
         <div class="faq__list">
           <details class="qa reveal">
             <summary>How do I book an appointment?</summary>
-            <div class="qa__body"><p>Fill out the <a href="#book">appointment request form</a> on this page, call <a href="tel:+19014838862">(901) 483-8862</a>, or email <a href="mailto:xavierwade38@gmail.com">xavierwade38@gmail.com</a>. We'll reach out to confirm the details and find a time that works for you.</p></div>
+            <div class="qa__body"><p>Fill out the <a href="#book">appointment request form</a>, call or text <a href="tel:+19014838862">(901) 483-8862</a>, or email <a href="mailto:xavierwade38@gmail.com">xavierwade38@gmail.com</a>. We'll reach out to confirm the details and a time that works for you.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Do you come to me?</summary>
+            <div class="qa__body"><p>Yes. Legendary Detailing is a mobile auto detailing service. Include your address or ZIP code when you request an appointment, and we'll confirm the details with you.</p></div>
           </details>
           <details class="qa reveal">
             <summary>What detailing services do you offer?</summary>
-            <div class="qa__body"><p>We offer Exterior Detailing, Interior Detailing, Full Vehicle Detailing (interior and exterior), and Custom Detailing for anything more specific. If you're not sure which is right for your vehicle, just ask — we'll help you choose.</p></div>
+            <div class="qa__body"><p>Four packages: Exterior Wash, Interior Detail, Full Detail, and the Full Detail Package. Add-ons include buffing, UV protection, rain repellent, and handwash. Need something specific? Ask about Custom Detailing for a personalized quote.</p></div>
           </details>
           <details class="qa reveal">
             <summary>How much does a detail cost?</summary>
-            <div class="qa__body"><p>Pricing depends on your vehicle and the service you choose. Contact Legendary Detailing for a quote — the more you tell us about your vehicle, the more accurate it will be.</p></div>
+            <div class="qa__body">
+              <p>Packages start at $20 for an Exterior Wash, $45 for an Interior Detail, $80 for a Full Detail, and $120 for the Full Detail Package. SUVs and trucks are +$20 on the Full Detail and Full Detail Package. Add-ons: buffing $20, UV protection $15, rain repellent $15, handwash +$25.</p>
+              <p>These are starting prices. Your final price is confirmed before your appointment, based on your vehicle's size and condition.</p>
+            </div>
           </details>
           <details class="qa reveal">
             <summary>How long does a detailing appointment take?</summary>
-            <div class="qa__body"><p>Timing varies with the service and your vehicle's size and condition. Reach out and we'll give you an estimate when we discuss your appointment.</p></div>
+            <div class="qa__body"><p>It depends on the package and your vehicle's size and condition. We'll give you a time estimate when we confirm your appointment.</p></div>
           </details>
           <details class="qa reveal">
             <summary>What information should I provide when requesting a quote?</summary>
-            <div class="qa__body"><p>Include your vehicle's year, make, and model, the service you're interested in, your preferred appointment date, and any details about its current condition or areas that need extra attention. Photos are always welcome when you email.</p></div>
+            <div class="qa__body"><p>Your vehicle's year, make, and model, the package you're interested in, where you'd like the service, and your preferred date. Mention any stains, pet hair, or problem areas. Photos help too: <a href="sms:+19014838862" data-sms>text them to (901) 483-8862</a>.</p></div>
           </details>
         </div>
       </div>
@@ -485,7 +591,7 @@
   <footer class="footer" id="contact">
     <div class="footer__cta">
       <div class="container footer__cta-inner">
-        <h2 class="h3">Ready to make your ride <span class="gold">legendary?</span></h2>
+        <h2 class="h3">Ready to make your ride legendary?</h2>
         <div class="footer__cta-actions">
           <a href="#book" class="btn btn--gold">Book Now</a>
           <a href="tel:+19014838862" class="btn btn--ghost">Call (901) 483-8862</a>
@@ -494,27 +600,22 @@
     </div>
     <div class="container footer__grid">
       <div class="footer__brand">
-        <img src="assets/img/logo-gold.webp" alt="Legendary Detailing" width="635" height="285" loading="lazy">
+        <img src="assets/img/logo-gold-480.webp" srcset="assets/img/logo-gold-240.webp 240w, assets/img/logo-gold-480.webp 480w" sizes="220px" alt="Legendary Detailing" width="635" height="285" loading="lazy" decoding="async">
         <p class="footer__tag">Every Detail. Legendary Results.</p>
-        <div class="footer__social">
-          <!-- Replace href="#" with the real profile URLs and remove the data-placeholder attribute -->
-          <a href="#" class="social" data-placeholder aria-label="Instagram (coming soon)" title="Instagram — coming soon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="fill"/></svg>
-          </a>
-          <a href="#" class="social" data-placeholder aria-label="Facebook (coming soon)" title="Facebook — coming soon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>
-          </a>
-        </div>
+        <p class="footer__mobile">Professional mobile auto detailing. We come to you.</p>
+        <!-- Social icons appear automatically once links are added in assets/js/content.js -->
+        <div class="footer__social" id="footer-social" hidden></div>
       </div>
       <div class="footer__col">
         <h3>Contact</h3>
         <ul>
-          <li><a href="tel:+19014838862"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>(901) 483-8862</a></li>
+          <li><a href="tel:+19014838862"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Call (901) 483-8862</a></li>
+          <li><a href="sms:+19014838862" data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text (901) 483-8862</a></li>
           <li><a href="mailto:xavierwade38@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>xavierwade38@gmail.com</a></li>
         </ul>
       </div>
       <div class="footer__col">
-        <h3>Quick Links</h3>
+        <h3>Quick links</h3>
         <ul class="footer__links">
           <li><a href="#home">Home</a></li>
           <li><a href="#services">Services</a></li>
@@ -534,30 +635,40 @@
   </footer>
 
   <!-- Mobile quick-action bar -->
-  <div class="quickbar" aria-label="Quick actions">
-    <a href="tel:+19014838862" class="quickbar__call"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
-    <a href="#book" class="quickbar__book">Book Your Detail</a>
-  </div>
+  <nav class="quickbar" aria-label="Quick contact">
+    <a href="tel:+19014838862"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
+    <a href="sms:+19014838862?&amp;body=Hi%20Legendary%20Detailing!%20I%27d%20like%20to%20book%20a%20detail." data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text</a>
+    <a href="#book" class="quickbar__book">Book</a>
+  </nav>
 
   <!-- Full-screen photo viewer -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
-    <button class="lightbox__close" aria-label="Close photo viewer">&times;</button>
-    <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">&#8249;</button>
+    <button class="lightbox__close" type="button" aria-label="Close photo viewer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <figure>
-      <img id="lightbox-img" alt="">
+      <img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
       <figcaption id="lightbox-cap"></figcaption>
     </figure>
-    <button class="lightbox__nav lightbox__nav--next" aria-label="Next photo">&#8250;</button>
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 
   <!-- Shared icons -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 005 5L15 12l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v10a1 1 0 01-1 1h-9l-5 4v-4H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><path d="M8 10h8M8 13h5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 011-1h8l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 002.5 2.5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 11-3.5-3.5"/><path d="M14 3c.5 3 2.5 5 5.5 5"/></symbol>
+    <symbol id="i-google" viewBox="0 0 24 24"><path d="M20 12.2c0-.6-.1-1.2-.2-1.7H12v3.3h4.5a3.9 3.9 0 01-1.7 2.5v2h2.7c1.6-1.5 2.5-3.6 2.5-6.1z"/><path d="M12 20.5c2.3 0 4.2-.8 5.5-2.1l-2.7-2a5 5 0 01-7.5-2.7H4.5v2.1A8.5 8.5 0 0012 20.5z"/><path d="M7.3 13.7a5 5 0 010-3.4V8.2H4.5a8.5 8.5 0 000 7.6z"/><path d="M12 6.9c1.3 0 2.4.4 3.3 1.3l2.4-2.4A8.5 8.5 0 004.5 8.2l2.8 2.1A5 5 0 0112 6.9z"/></symbol>
   </svg>
 
-  <script src="assets/js/reviews.js"></script>
+  <script src="assets/js/content.js"></script>
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>
