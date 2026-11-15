@@ -323,6 +323,7 @@ p { max-width: 68ch; }
 .addons { margin-top: 48px; display: grid; gap: 18px; align-items: center; }
 @media (min-width: 900px) { .addons { grid-template-columns: 220px 1fr; gap: 36px; } }
 .addons__title { font-size: 1.7rem; font-weight: 800; }
+.addons__note { margin: 8px 0 0; color: var(--gray); font-size: .92rem; line-height: 1.45; }
 .addons__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 @media (min-width: 640px) { .addons__list { grid-template-columns: repeat(4, 1fr); } }
 .addons__list li { background: var(--black); padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; }
@@ -370,6 +371,26 @@ p { max-width: 68ch; }
 .feature:hover .feature__icon { transform: rotate(-8deg) scale(1.08); }
 .feature h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; line-height: 1; }
 .feature p { margin: 0; color: var(--gray); }
+
+/* ---------- Service area: Memphis ---------- */
+.area { background: var(--black); border-top: 1px solid var(--line); overflow: hidden; }
+.area__grid { display: grid; gap: 24px 80px; align-items: center; }
+@media (min-width: 960px) { .area__grid { grid-template-columns: 5fr 6fr; } }
+.area__mark { line-height: .78; user-select: none; }
+.area__code {
+  display: block; font-stretch: var(--display-stretch); font-weight: 800; letter-spacing: -.02em;
+  font-size: clamp(10rem, 46vw, 23rem); color: transparent;
+  -webkit-text-stroke: 2px var(--gold);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .area__code { background: linear-gradient(180deg, rgba(212, 175, 55, .16), rgba(212, 175, 55, 0) 75%); -webkit-background-clip: text; background-clip: text; }
+}
+@supports not ((-webkit-text-stroke: 2px red)) { .area__code { color: var(--gold); } }
+.area__list { list-style: none; margin: 4px 0 22px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.area__list li { padding: 7px 14px; border: 1px solid var(--line-gold); border-radius: 999px; color: var(--white); font-weight: 500; font-size: .96rem; }
+.area__note { color: var(--gray); margin: 0 0 30px; }
+.area__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+@media (max-width: 959px) { .area__mark { margin-bottom: -8px; } }
 
 /* ---------- Process ---------- */
 .process { background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.08), transparent 60%), var(--black); }
@@ -457,6 +478,7 @@ html:not(.js) .form__step + .form__step { margin-top: 36px; padding-top: 30px; b
 .field.is-invalid input { border-color: var(--danger); }
 .field.is-invalid .choices { outline: 1px solid var(--danger); outline-offset: 4px; border-radius: var(--radius); }
 .field__error { margin: 0; color: var(--danger); font-size: .9rem; }
+.field__hint { margin: 0; color: var(--gold-hi); font-size: .9rem; }
 
 .choices { display: grid; gap: 8px; }
 .choices--pkg { grid-template-columns: 1fr 1fr; }

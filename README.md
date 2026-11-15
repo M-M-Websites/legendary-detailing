@@ -1,6 +1,6 @@
 # Legendary Detailing: Website
 
-Premium, fully responsive website for **Legendary Detailing**, a professional mobile auto detailing business.
+Premium, fully responsive website for **Legendary Detailing**, a mobile auto detailing business in **Memphis, Tennessee**. The copy, service-area section and search data all target customers in the Memphis area.
 
 - **Preview:** https://michaelabatetsu.github.io/legendary-detailing/
 - **Stack:** hand-built HTML, CSS and vanilla JavaScript. There's no framework and no build step, so any static host can serve it as-is.
@@ -8,7 +8,7 @@ Premium, fully responsive website for **Legendary Detailing**, a professional mo
   - Lighthouse scores 100 for Accessibility, Best Practices and SEO.
   - Performance is 99 on desktop and 91+ on mobile with simulated slow 4G.
   - axe-core finds no accessibility violations.
-  - A 21-test regression suite is included (see *Testing*).
+  - A 22-test regression suite is included (see *Testing*).
 
 ---
 
@@ -50,6 +50,11 @@ Prices match the business flyer. Each one appears in three places, so update all
 
 `data-suv="20"` on a package adds the SUV/truck surcharge to the estimate. `data-includes` lists add-ons that a package already includes.
 
+### Memphis service area
+- **Neighborhood list:** in `index.html`, in the *Service area* section (`.area__list`) and the FAQ answer *What areas of Memphis do you serve?*. Keep both in sync.
+- **ZIP check:** the booking form gently flags ZIP codes outside the Memphis area (anything other than Memphis `381xx` and the Shelby County ZIPs listed in the code). It never blocks a request. The rule is in `assets/js/main.js` under "Soft Memphis-area hint".
+- **Search data:** the title, meta description, `geo.*` tags and the JSON-LD `address` and `areaServed` name Memphis, TN. There's no street address, because the business comes to the customer.
+
 ### Gallery photos
 1. Put the photo in `assets/img/` (WebP, about 1200px wide).
 2. In `index.html`, copy a `<figure class="tile">` block inside `#gallery`, then update `data-full`, `src`, `alt` and the caption.
@@ -72,6 +77,7 @@ Prices match the business flyer. Each one appears in three places, so update all
 | Services | Spec-sheet price list: Exterior Wash $20, Interior Detail $45, Full Detail $80, Full Detail Package $120, add-ons, and Custom Detailing. The "Book" buttons pre-select the package in the form |
 | Our Work | Editorial gallery with a squeegee-style gold-edge reveal and a full-screen viewer (keyboard, swipe, focus trap) |
 | Why Legendary / Process | Four reasons and a three-step process with an animated connecting line |
+| Service area | Giant outlined "901", Memphis neighborhoods, a note for customers outside Memphis, and Book/Call buttons |
 | Reviews | Hidden until real reviews are added to `content.js` |
 | Booking | Two-step request form: (1) package, vehicle type, add-ons with a live price estimate; (2) contact details and timing. Inline validation, a summary before sending, an animated confirmation, and call/text/email fallbacks |
 | FAQ | Animated accordion: booking, mobile service, services, pricing, timing, what to include |

@@ -376,6 +376,23 @@
 
   $('[data-next]', form).addEventListener('click', () => { if (validateStep(1)) goTo(2); });
   $('[data-back]', form).addEventListener('click', () => goTo(1));
+  /* Soft Memphis-area hint: never blocks the request */
+  const loc = $('#f-location');
+  const locHint = $('#h-location');
+  if (loc && locHint) {
+    // Memphis (381xx) plus Shelby County ZIPs outside the 381 prefix (Cordova, Arlington, Bartlett, Collierville, Millington...)
+    const MEMPHIS_AREA = /^(381\d\d|380(02|16|17|18|27|28|53|54|55|83|88))$/;
+    const checkZip = () => {
+      // the ZIP is the last 5-digit number, so house numbers like "10450 Poplar Ave" are ignored
+      const nums = loc.value.match(/\b\d{5}(?=(-\d{4})?\b)/g) || [];
+      const zip = nums.length ? nums[nums.length - 1] : '';
+      const outside = Boolean(zip) && !MEMPHIS_AREA.test(zip);
+      locHint.textContent = outside ? 'That ZIP looks outside the Memphis area. Send your request anyway and we\'ll let you know if we can reach you.' : '';
+      locHint.hidden = !outside;
+    };
+    loc.addEventListener('input', checkZip);
+  }
+
   ['#f-name', '#f-phone', '#f-email'].forEach((sel) => $(sel).addEventListener('input', (e) => {
     if (e.target.closest('.field').classList.contains('is-invalid')) validateStep(2, false);
   }));
