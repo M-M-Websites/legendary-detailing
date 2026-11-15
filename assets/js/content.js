@@ -14,6 +14,29 @@ window.LD_SOCIAL = {
   google: ""   // Google Business Profile link, e.g. https://g.page/r/...  (also used for "Read all reviews")
 };
 
+/* BUSINESS HOURS
+   Leave empty until the owner confirms real hours. Once filled in, the hours
+   show in the footer and are added to the Google structured data automatically.
+   Days must be written in full English (Monday, Tuesday, ...). Times are 24-hour.
+
+   Example:
+   { label: "Mon - Fri", days: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "18:00" },
+   { label: "Saturday",  days: ["Saturday"], opens: "09:00", closes: "15:00" },
+*/
+window.LD_HOURS = [
+
+];
+
+/* PRIVACY-FRIENDLY ANALYTICS (optional, no cookies)
+   Counts visits plus phone, text and email clicks and booking requests.
+   Supported: "plausible" (siteId = your domain, e.g. "legendarydetailing.com")
+              "goatcounter" (siteId = your GoatCounter code, e.g. "legendarydetailing")
+   Leave provider empty to turn analytics off. See docs/SEO.md for setup. */
+window.LD_ANALYTICS = {
+  provider: "",
+  siteId: ""
+};
+
 /* CLIENT REVIEWS
    Add ONLY real reviews from actual customers, copied word for word.
    The Reviews section stays hidden until at least one review is here.

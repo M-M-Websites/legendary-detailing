@@ -8,9 +8,13 @@ Premium, fully responsive website for **Legendary Detailing**, a mobile auto det
   - Lighthouse scores 100 for Accessibility, Best Practices and SEO.
   - Performance is 99 on desktop and 91+ on mobile with simulated slow 4G.
   - axe-core finds no accessibility violations.
-  - A 22-test regression suite is included (see *Testing*).
+  - A 24-test regression suite is included (see *Testing*).
 
 ---
+
+## SEO
+
+The full SEO guide is in **[docs/SEO.md](docs/SEO.md)**. It covers what's optimized, how to set up Google Search Console, Google Business Profile and analytics, what the owner still needs to confirm, and the final audit. A monthly reporting template is in [docs/seo-monthly-report.md](docs/seo-monthly-report.md).
 
 ## Launch checklist (about 15 minutes)
 
@@ -28,7 +32,7 @@ Premium, fully responsive website for **Legendary Detailing**, a mobile auto det
 4. **Activate the booking form (one time).** Submit one test request on the live site. FormSubmit then emails **xavierwade38@gmail.com** an *Activate Form* link; click it. From then on, every request arrives in that inbox as a formatted email, and Reply goes straight to the customer when they gave an email address. Until activation, visitors see a message asking them to call, text or email instead, so no lead is lost.
    - Have the owner mark the first FormSubmit email *Not spam* so later requests land in the inbox.
    - *Optional:* after activation, FormSubmit offers a random alias. Put it in place of the email address in the form's `action` in `index.html` to hide the address from spam bots.
-5. **Submit the sitemap** in Google Search Console (`https://yourdomain.com/sitemap.xml`).
+5. **Submit the sitemap** in Google Search Console (`https://yourdomain.com/sitemap.xml`). See [docs/SEO.md](docs/SEO.md) for the full Search Console and Google Business Profile steps.
 
 Everything else on the site is complete. The owner-specific content below has a place ready and turns on by itself once it's filled in.
 
@@ -36,9 +40,11 @@ Everything else on the site is complete. The owner-specific content below has a 
 
 ## Editing the site
 
-### Reviews and social links → `assets/js/content.js`
+### Reviews, social links, hours and analytics → `assets/js/content.js`
 This is the only file the owner needs to touch.
-- **Social links:** paste the full Instagram, Facebook, TikTok or Google Business Profile URLs. Their icons appear in the footer automatically.
+- **Business hours (`LD_HOURS`):** once filled in, the hours appear in the footer and are added to Google's structured data automatically.
+- **Analytics (`LD_ANALYTICS`):** turns on cookieless Plausible or GoatCounter tracking for visits, phone, text and email clicks, and booking requests. See docs/SEO.md.
+- **Social links (`LD_SOCIAL`):** paste the full Instagram, Facebook, TikTok or Google Business Profile URLs. Their icons appear in the footer automatically.
 - **Reviews:** add real customer reviews only, word for word. The *What our clients are saying* section stays hidden until at least one exists, so the site never shows an empty or fake review block. Fake reviews are illegal under the FTC rule that took effect October 2024.
 - To preview the review layout without publishing anything, open the site with `?editor` at the end of the address.
 
@@ -98,6 +104,7 @@ cd tests
 npm install
 npx playwright install chromium
 npm test
+python3 validate_structured_data.py
 ```
 
 The suite covers:
@@ -105,6 +112,8 @@ The suite covers:
 - **Content:** every phone, text and email link, prices, structured data, and navigation.
 - **Booking form:** the price estimate, two-step validation, payload contents, and both success and failure paths. FormSubmit is mocked, so tests never send real email.
 - **Interactive parts:** the gallery viewer, the mobile menu and quick bar, the FAQ, and `content.js` reviews and socials.
+- **SEO:** one H1, the required H2s with no skipped levels, 80–150-word service guides, alt text, calls to action, robots/canonical/Open Graph, and structured data (`validate_structured_data.py` checks it against the schema.org vocabulary).
+- **Analytics:** phone, text, email and book clicks, plus booking results, raise tracking events.
 - **Accessibility:** axe-core checks plus keyboard use.
 - **Fallbacks:** no JavaScript, reduced motion, the Content-Security-Policy from `_headers`, and the 404 page.
 

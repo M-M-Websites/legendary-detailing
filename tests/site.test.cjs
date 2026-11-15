@@ -102,8 +102,10 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
       eq(overflow, 0, 'horizontal overflow (px)');
       const broken = await page.evaluate(() => [...document.images].filter((i) => !i.closest('[hidden]') && i.id !== 'lightbox-img' && (!i.complete || i.naturalWidth === 0)).map((i) => i.src));
       eq(broken.length, 0, `broken images ${broken.join(', ')}`);
-      const h1 = await page.locator('h1').innerText();
-      assert(/every detail/i.test(h1) && /legendary/i.test(h1) && /results/i.test(h1), `hero headline wrong: ${h1}`);
+      eq(await page.locator('h1').count(), 1, 'exactly one h1');
+      const tagline = await page.locator('.hero__title').innerText();
+      assert(/every detail/i.test(tagline) && /legendary/i.test(tagline) && /results/i.test(tagline), `hero tagline wrong: ${tagline}`);
+      assert(await page.locator('.hero__title').isVisible() && await page.locator('h1').isVisible(), 'h1 and tagline visible');
       // nothing important hidden behind the fixed nav or off-screen
       const offscreen = await page.evaluate(() => [...document.querySelectorAll('main a, main button')].filter((el) => {
         const r = el.getBoundingClientRect(); return r.width > 0 && (r.right > window.innerWidth + 1 || r.left < -1);
@@ -136,14 +138,17 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     eq(addons.join(','), '$20,$15,$15,+$25', 'add-on prices');
     const suvNotes = await page.$$eval('.pkg__note', (n) => n.length);
     eq(suvNotes, 2, 'SUV notes on Full Detail and Full Detail Package');
-    eq(await page.title(), 'Legendary Detailing | Mobile Auto Detailing in Memphis, TN', 'title');
+    eq(await page.title(), 'Legendary Detailing | Professional Auto Detailing in Memphis, TN', 'title');
     const desc = await page.getAttribute('meta[name="description"]', 'content');
-    assert(/mobile auto detailing/i.test(desc) && /Memphis, TN/.test(desc) && desc.length <= 160, `meta description: ${desc}`);
+    assert(/interior and exterior car detailing/i.test(desc) && /Memphis, TN/.test(desc) && desc.length <= 160, `meta description: ${desc}`);
     eq(await page.getAttribute('meta[name="geo.placename"]', 'content'), 'Memphis', 'geo.placename');
-    const ld = JSON.parse(await page.$eval('script[type="application/ld+json"]', (s) => s.textContent));
-    eq(ld['@type'], 'AutomotiveBusiness', 'schema type');
+    const graph = JSON.parse(await page.$eval('script[type="application/ld+json"]', (s) => s.textContent))['@graph'];
+    const ld = graph.find((n) => n['@type'] === 'AutomotiveBusiness');
+    assert(ld && graph.find((n) => n['@type'] === 'WebSite'), 'WebSite + AutomotiveBusiness nodes');
     eq(ld.telephone, '+1-901-483-8862', 'schema phone');
-    eq(ld.hasOfferCatalog.itemListElement.length, 4, 'schema offers');
+    eq(ld.email, EMAIL, 'schema email');
+    eq(ld.hasOfferCatalog.itemListElement.length, 5, 'schema offers');
+    assert(!('openingHoursSpecification' in ld) && !('sameAs' in ld), 'no hours or profiles until confirmed');
     assert(!('aggregateRating' in ld), 'schema must not claim ratings');
     eq(ld.address.addressLocality, 'Memphis', 'schema city');
     eq(ld.address.addressRegion, 'TN', 'schema state');
@@ -188,6 +193,74 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await page.fill('#f-location', 'Cordova');
     assert(!(await page.isVisible('#h-location')), 'no ZIP: no hint');
     eq(problems.length, 0, problems.join('; '));
+    await ctx.close();
+  });
+
+  /* SEO: headings, metadata, content, images, CTAs */
+  await test('seo: metadata, heading hierarchy, service content, images and calls to action', async () => {
+    const { ctx, page, problems } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
+    eq(await page.getAttribute('meta[name="robots"]', 'content'), 'index, follow, max-image-preview:large', 'robots meta');
+    assert(/^https:\/\//.test(await page.getAttribute('link[rel="canonical"]', 'href')), 'canonical is absolute https');
+    eq(await page.getAttribute('meta[property="og:title"]', 'content'), await page.title(), 'og:title matches title');
+    eq(await page.getAttribute('html', 'lang'), 'en', 'lang');
+    const h1 = (await page.textContent('h1')).replace(/\s+/g, ' ').trim();
+    eq(h1, 'Professional Auto Detailing in Memphis, TN | Legendary Detailing', 'h1 text');
+    const h2s = await page.$$eval('main h2', (n) => n.filter((x) => !x.closest('[hidden]')).map((x) => x.textContent.trim()));
+    for (const want of ['Professional Interior & Exterior Detailing', 'Our Auto Detailing Services', 'See Our Detailing Work', 'Why Choose Legendary Detailing?', 'Request Your Detailing Appointment']) {
+      assert(h2s.includes(want), `missing H2 "${want}" in ${JSON.stringify(h2s)}`);
+    }
+    const skips = await page.evaluate(() => {
+      const hs = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].filter((h) => !h.closest('[hidden], template'));
+      const out = []; let prev = 0;
+      hs.forEach((h) => { const lvl = Number(h.tagName[1]); if (prev && lvl > prev + 1) out.push(`${h.tagName} "${h.textContent.trim()}" after h${prev}`); prev = lvl; });
+      if (hs[0].tagName !== 'H1') out.push('first heading is not h1');
+      return out;
+    });
+    eq(skips.length, 0, `heading level skips: ${skips.join('; ')}`);
+    const words = await page.$$eval('.guide__item', (n) => n.map((a) => [a.querySelector('h3').textContent, [...a.querySelectorAll('p')].map((p) => p.textContent).join(' ').split(/\s+/).filter(Boolean).length]));
+    eq(words.length, 4, 'four service guides');
+    words.forEach(([h, w]) => assert(w >= 80 && w <= 150, `"${h}" has ${w} words (want 80-150)`));
+    const alts = await page.$$eval('main img, header img, footer img', (n) => n.map((i) => ({ src: i.getAttribute('src'), alt: i.getAttribute('alt'), deco: !!i.closest('[aria-hidden="true"]') })));
+    alts.forEach((i) => assert(i.alt !== null && (i.deco || i.alt.length >= 10 || i.alt === 'Legendary Detailing'), `weak alt on ${i.src}: "${i.alt}"`));
+    const decoBg = await page.getAttribute('.book__bg img', 'alt');
+    eq(decoBg, '', 'decorative background image has empty alt');
+    const ctas = await page.$$eval('a.btn, a.guide__link', (n) => n.map((a) => a.textContent.replace(/\s+/g, ' ').trim()));
+    for (const c of ['Book Your Detail', 'Request a Quote', 'Call Legendary Detailing', 'View Our Work']) assert(ctas.includes(c), `CTA "${c}" missing`);
+    const html = await page.content();
+    assert(!/noindex/i.test(html), 'no noindex on the homepage');
+    assert(!/aggregateRating|reviewRating|streetAddress/.test(html), 'no fabricated ratings or street address in structured data');
+    eq(problems.length, 0, problems.join('; '));
+    await ctx.close();
+  });
+
+  await test('analytics: phone, text, email, book clicks and form results raise tracking events', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await ctx.newPage();
+    await page.addInitScript(() => {
+      window.__events = [];
+      document.addEventListener('ld:track', (e) => window.__events.push(e.detail.name + '|' + (e.detail.props.location || e.detail.props.package || '')));
+      window.addEventListener('click', (e) => { const a = e.target.closest('a[href^="tel:"], a[href^="sms:"], a[href^="mailto:"]'); if (a) e.preventDefault(); }, true);
+    });
+    await page.route('https://plausible.io/**', (r) => r.fulfill({ contentType: 'text/javascript', body: '/* stub */' }));
+    await page.route('**/assets/js/content.js', (r) => r.fulfill({ contentType: 'text/javascript', body: 'window.LD_SOCIAL={};window.LD_REVIEWS=[];window.LD_HOURS=[];window.LD_ANALYTICS={provider:"plausible",siteId:"example.com"};' }));
+    await page.route('https://formsubmit.co/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":"true"}' }));
+    await page.goto(base + '/', { waitUntil: 'networkidle' });
+    eq(await page.locator('script[src="https://plausible.io/js/script.js"][data-domain="example.com"]').count(), 1, 'plausible loaded with domain');
+    await page.locator('.hero__links a[href^="tel:"]').click();
+    await page.locator('.hero__links a[href^="sms:"]').click();
+    await page.locator('#contact a[href^="mailto:"]').first().click();
+    await page.locator('.hero__actions a[href="#book"]').click();
+    await fillStep1(page, 'Full Detail', 'Car');
+    await page.click('[data-next]');
+    await page.fill('#f-name', 'Test Customer'); await page.fill('#f-phone', '9015550100');
+    await page.click('#form-submit');
+    await page.waitForSelector('#form-success', { state: 'visible' });
+    const events = await page.evaluate(() => window.__events);
+    for (const want of ['Phone click|home', 'Text click|home', 'Email click|contact', 'Book button click|home', 'Booking request sent|Full Detail']) {
+      assert(events.includes(want), `missing event ${want} in ${JSON.stringify(events)}`);
+    }
+    const queued = await page.evaluate(() => (window.plausible.q || []).map((a) => a[0]));
+    assert(queued.includes('Phone click') && queued.includes('Booking request sent'), `plausible queue: ${queued}`);
     await ctx.close();
   });
 
@@ -372,13 +445,19 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await ctx.close();
     const ctx2 = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const p2 = await ctx2.newPage();
-    await p2.route('**/assets/js/content.js', (r) => r.fulfill({ contentType: 'text/javascript', body: `window.LD_SOCIAL={instagram:"https://instagram.com/example",facebook:"",tiktok:"",google:"https://g.page/r/example"};window.LD_REVIEWS=[{name:"A. Customer",vehicle:"2020 Audi",rating:5,text:"Great work.",source:"Google"}];` }));
+    await p2.route('**/assets/js/content.js', (r) => r.fulfill({ contentType: 'text/javascript', body: `window.LD_SOCIAL={instagram:"https://instagram.com/example",facebook:"",tiktok:"",google:"https://g.page/r/example"};window.LD_HOURS=[{label:"Mon - Fri",days:["Monday","Tuesday","Wednesday","Thursday","Friday"],opens:"08:00",closes:"18:30"},{days:["Funday"],opens:"x",closes:"y"}];window.LD_REVIEWS=[{name:"A. Customer",vehicle:"2020 Audi",rating:5,text:"Great work.",source:"Google"}];` }));
     await p2.goto(base + '/', { waitUntil: 'networkidle' });
     assert(await p2.isVisible('#reviews'), 'reviews visible with real data');
     eq(await p2.locator('.review').count(), 1, 'one review');
     eq(await p2.getAttribute('.review__stars', 'aria-label'), '5 out of 5 stars', 'stars label');
     eq(await p2.locator('#footer-social a').count(), 2, 'instagram + google icons');
     assert(await p2.isVisible('#reviews-more a'), 'read-all-reviews link');
+    assert(await p2.isVisible('#footer-hours'), 'hours shown');
+    eq(await p2.locator('#hours-list li').count(), 1, 'invalid hours entry ignored');
+    eq((await p2.textContent('#hours-list li')).replace(/\s+/g, ' ').trim(), 'Mon - Fri8 AM - 6:30 PM', 'hours formatting');
+    const biz = JSON.parse(await p2.$eval('#ld-json', (s) => s.textContent))['@graph'].find((n) => n['@type'] === 'AutomotiveBusiness');
+    eq(JSON.stringify(biz.sameAs), JSON.stringify(['https://instagram.com/example', 'https://g.page/r/example']), 'sameAs from content.js');
+    eq(biz.openingHoursSpecification[0].closes, '18:30', 'hours in structured data');
     await ctx2.close();
   });
 

@@ -11,6 +11,43 @@
   const year = $('#year');
   if (year) year.textContent = String(new Date().getFullYear());
 
+  /* ---------- Privacy-friendly analytics + conversion events ---------- */
+  // Every event is also dispatched as a DOM event ("ld:track") so any tool can listen.
+  const analytics = window.LD_ANALYTICS || {};
+  const siteId = String(analytics.siteId || '').trim().toLowerCase();
+  const provider = /^[a-z0-9.-]+$/.test(siteId) ? String(analytics.provider || '').trim().toLowerCase() : '';
+  if (provider === 'plausible') {
+    window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
+    const sc = document.createElement('script');
+    sc.defer = true; sc.src = 'https://plausible.io/js/script.js'; sc.dataset.domain = siteId;
+    document.head.appendChild(sc);
+  } else if (provider === 'goatcounter') {
+    const sc = document.createElement('script');
+    sc.async = true; sc.src = 'https://gc.zgo.at/count.js'; sc.dataset.goatcounter = `https://${siteId}.goatcounter.com/count`;
+    document.head.appendChild(sc);
+  }
+  const track = (name, props = {}) => {
+    document.dispatchEvent(new CustomEvent('ld:track', { detail: { name, props } }));
+    try {
+      if (provider === 'plausible' && window.plausible) window.plausible(name, { props });
+      else if (provider === 'goatcounter' && window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: `event-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`, title: name, event: true });
+      }
+    } catch (e) { /* analytics must never break the page */ }
+  };
+  window.ldTrack = track;
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    const scope = a.closest('section[id], header[id], footer[id], nav[id], .quickbar');
+    const where = scope ? (scope.id || 'quickbar') : 'page';
+    if (href.startsWith('tel:')) track('Phone click', { location: where });
+    else if (href.startsWith('sms:')) track('Text click', { location: where });
+    else if (href.startsWith('mailto:') && !a.closest('#form-error')) track('Email click', { location: where });
+    else if (href === '#book') track('Book button click', { location: where, label: a.textContent.trim().slice(0, 40) });
+  });
+
   /* ---------- Page-load sequence (hero) ---------- */
   const heroImg = $('.hero__media img');
   const markLoaded = () => root.classList.add('is-loaded');
@@ -191,6 +228,37 @@
     socialWrap.appendChild(a);
     socialWrap.hidden = false;
   });
+
+  /* ---------- Business hours (from content.js) ---------- */
+  const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const hours = (Array.isArray(window.LD_HOURS) ? window.LD_HOURS : []).filter((h) => h && Array.isArray(h.days) && h.days.length
+    && h.days.every((d) => DAY_ORDER.includes(d)) && /^\d{2}:\d{2}$/.test(h.opens || '') && /^\d{2}:\d{2}$/.test(h.closes || ''));
+  const fmtTime = (t) => { const [hh, mm] = t.split(':').map(Number); const ap = hh >= 12 ? 'PM' : 'AM'; return `${((hh + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${ap}`; };
+  if (hours.length) {
+    const list = $('#hours-list');
+    hours.forEach((h) => {
+      const li = document.createElement('li');
+      const day = document.createElement('span'); day.textContent = h.label || h.days.join(', ');
+      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} - ${fmtTime(h.closes)}`;
+      li.append(day, time); list.appendChild(li);
+    });
+    $('#footer-hours').hidden = false;
+  }
+
+  /* ---------- Structured data: add confirmed social profiles and hours from content.js ---------- */
+  const ldScript = $('#ld-json');
+  if (ldScript) {
+    try {
+      const ld = JSON.parse(ldScript.textContent);
+      const biz = (ld['@graph'] || []).find((n) => n['@type'] === 'AutomotiveBusiness');
+      const profiles = Object.keys(socialNames).map((k) => (social[k] || '').trim()).filter((u) => /^https:\/\//.test(u));
+      if (biz && (profiles.length || hours.length)) {
+        if (profiles.length) biz.sameAs = profiles;
+        if (hours.length) biz.openingHoursSpecification = hours.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes }));
+        ldScript.textContent = JSON.stringify(ld);
+      }
+    } catch (e) { /* leave the static structured data untouched */ }
+  }
 
   /* ---------- Reviews (from content.js): shown only when real reviews exist ---------- */
   const reviews = (Array.isArray(window.LD_REVIEWS) ? window.LD_REVIEWS : []).filter((r) => r && r.text && r.name);
@@ -440,11 +508,13 @@
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || `HTTP ${res.status}`);
+      track('Booking request sent', { package: data.Package || '', vehicle: data['Vehicle Type'] || '' });
       form.hidden = true;
       success.hidden = false;
       success.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
       success.focus({ preventScroll: true });
     } catch (err) {
+      track('Booking request failed', { reason: String(err.message || '').slice(0, 60) });
       errorBox.innerHTML = `Your request didn't go through. Call or text <a href="${BUSINESS.tel}">${BUSINESS.phone}</a>, or <a href="${mailtoFallback(data)}">email your request</a> instead.`;
       errorBox.hidden = false;
     } finally {

@@ -4,7 +4,7 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=' https://plausible.io https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.goatcounter.com; font-src 'self'; connect-src 'self' https://formsubmit.co https://plausible.io https://*.goatcounter.com; form-action https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
 
 /assets/img/*
   Cache-Control: public, max-age=2592000

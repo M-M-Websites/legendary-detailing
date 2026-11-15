@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Legendary Detailing | Mobile Auto Detailing in Memphis, TN</title>
-  <meta name="description" content="Mobile auto detailing in Memphis, TN. Legendary Detailing comes to you. Exterior, interior and full detail packages from $20. Request your detail today.">
+  <title>Legendary Detailing | Professional Auto Detailing in Memphis, TN</title>
+  <meta name="description" content="Professional interior and exterior car detailing in Memphis, TN. Explore Legendary Detailing services, view our work, and request a detailing appointment today.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="geo.region" content="US-TN">
   <meta name="geo.placename" content="Memphis">
   <meta name="theme-color" content="#0B0B0B">
@@ -13,14 +14,15 @@
   <!-- Social sharing. scripts/set-domain.sh rewrites these URLs when the custom domain is connected. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Legendary Detailing">
-  <meta property="og:title" content="Legendary Detailing | Mobile Auto Detailing in Memphis, TN">
+  <meta property="og:title" content="Legendary Detailing | Professional Auto Detailing in Memphis, TN">
   <meta property="og:locale" content="en_US">
-  <meta property="og:description" content="Mobile auto detailing in Memphis, TN. We come to you. Packages from $20. Request your detail today.">
+  <meta property="og:description" content="Professional interior and exterior car detailing in Memphis, TN. Explore Legendary Detailing services, view our work, and request a detailing appointment today.">
   <meta property="og:image" content="https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://michaelabatetsu.github.io/legendary-detailing/">
   <link rel="canonical" href="https://michaelabatetsu.github.io/legendary-detailing/">
+  <meta property="og:image:alt" content="Professionally detailed deep red Infiniti convertible by Legendary Detailing">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -29,32 +31,47 @@
   <link rel="preload" as="image" href="assets/img/infiniti-convertible-1200.webp" imagesrcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/styles.css">
 
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="ld-json">
   {
     "@context": "https://schema.org",
-    "@type": "AutomotiveBusiness",
-    "name": "Legendary Detailing",
-    "description": "Professional mobile auto detailing in Memphis, Tennessee: exterior wash, interior detail, full detail and full detail packages, plus add-on services. We come to you.",
-    "address": { "@type": "PostalAddress", "addressLocality": "Memphis", "addressRegion": "TN", "addressCountry": "US" },
-    "areaServed": { "@type": "City", "name": "Memphis", "containedInPlace": { "@type": "State", "name": "Tennessee" }, "sameAs": "https://en.wikipedia.org/wiki/Memphis,_Tennessee" },
-    "slogan": "Every Detail. Legendary Results.",
-    "telephone": "+1-901-483-8862",
-    "email": "xavierwade38@gmail.com",
-    "url": "https://michaelabatetsu.github.io/legendary-detailing/",
-    "image": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg",
-    "logo": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/logo-gold.webp",
-    "priceRange": "$20 - $140",
-    "currenciesAccepted": "USD",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Detailing packages",
-      "itemListElement": [
-        { "@type": "Offer", "name": "Exterior Wash", "price": "20", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "20", "priceCurrency": "USD" } },
-        { "@type": "Offer", "name": "Interior Detail", "price": "45", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "45", "priceCurrency": "USD" } },
-        { "@type": "Offer", "name": "Full Detail", "price": "80", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "80", "priceCurrency": "USD" } },
-        { "@type": "Offer", "name": "Full Detail Package", "price": "120", "priceCurrency": "USD", "priceSpecification": { "@type": "PriceSpecification", "minPrice": "120", "priceCurrency": "USD" } }
-      ]
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://michaelabatetsu.github.io/legendary-detailing/#website",
+        "url": "https://michaelabatetsu.github.io/legendary-detailing/",
+        "name": "Legendary Detailing",
+        "inLanguage": "en-US",
+        "publisher": { "@id": "https://michaelabatetsu.github.io/legendary-detailing/#business" }
+      },
+      {
+        "@type": "AutomotiveBusiness",
+        "@id": "https://michaelabatetsu.github.io/legendary-detailing/#business",
+        "name": "Legendary Detailing",
+        "description": "Professional mobile auto detailing in Memphis, Tennessee: interior car detailing, exterior car detailing, complete auto detailing and custom detailing quotes. We come to you.",
+        "slogan": "Every Detail. Legendary Results.",
+        "url": "https://michaelabatetsu.github.io/legendary-detailing/",
+        "telephone": "+1-901-483-8862",
+        "email": "xavierwade38@gmail.com",
+        "image": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/og-image.jpg",
+        "logo": "https://michaelabatetsu.github.io/legendary-detailing/assets/img/logo-gold.webp",
+        "address": { "@type": "PostalAddress", "addressLocality": "Memphis", "addressRegion": "TN", "addressCountry": "US" },
+        "areaServed": { "@type": "City", "name": "Memphis", "containedInPlace": { "@type": "State", "name": "Tennessee" }, "sameAs": "https://en.wikipedia.org/wiki/Memphis,_Tennessee" },
+        "priceRange": "$20 - $140",
+        "currenciesAccepted": "USD",
+        "contactPoint": { "@type": "ContactPoint", "telephone": "+1-901-483-8862", "email": "xavierwade38@gmail.com", "contactType": "customer service", "areaServed": "US-TN", "availableLanguage": "English" },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Auto detailing services",
+          "itemListElement": [
+            { "@type": "Offer", "name": "Exterior Wash", "price": "20", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Exterior car detailing", "serviceType": "Exterior auto detailing", "areaServed": "Memphis, TN" } },
+            { "@type": "Offer", "name": "Interior Detail", "price": "45", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Interior car detailing", "serviceType": "Interior auto detailing", "areaServed": "Memphis, TN" } },
+            { "@type": "Offer", "name": "Full Detail", "price": "80", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Complete auto detailing", "serviceType": "Full service auto detailing", "areaServed": "Memphis, TN" } },
+            { "@type": "Offer", "name": "Full Detail Package", "price": "120", "priceCurrency": "USD", "itemOffered": { "@type": "Service", "name": "Complete auto detailing with buffing, UV protectant and rain repellent", "serviceType": "Full service auto detailing", "areaServed": "Memphis, TN" } },
+            { "@type": "Offer", "name": "Custom Detailing", "itemOffered": { "@type": "Service", "name": "Custom detailing quote", "serviceType": "Custom auto detailing", "areaServed": "Memphis, TN" } }
+          ]
+        }
+      }
+    ]
   }
   </script>
   <script>document.documentElement.classList.add('js');</script>
@@ -89,22 +106,22 @@
   <main id="main">
 
     <!-- ============ 1. HERO ============ -->
-    <section class="hero" id="home" aria-labelledby="hero-title">
+    <section class="hero" id="home" aria-labelledby="page-title">
       <div class="hero__media" id="hero-media">
         <img src="assets/img/infiniti-convertible-1200.webp"
              srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w, assets/img/infiniti-convertible-full.webp 1500w"
-             sizes="100vw" alt="Deep red Infiniti convertible with a mirror-like gloss after a Legendary Detailing detail"
+             sizes="100vw" alt="Professionally detailed deep red Infiniti convertible with a mirror-like gloss finish, by Legendary Detailing"
              width="1500" height="2000" fetchpriority="high">
         <span class="hero__glint" aria-hidden="true"></span>
       </div>
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="container hero__content">
-        <p class="hero__eyebrow load-in" style="--i:0">Mobile auto detailing in Memphis, TN</p>
-        <h1 id="hero-title" class="hero__title">
+        <h1 id="page-title" class="hero__eyebrow load-in" style="--i:0"><span>Professional Auto Detailing in Memphis, TN <span class="hero__sep">|</span> Legendary Detailing</span></h1>
+        <p class="hero__title" id="hero-tagline">
           <span class="line"><span class="gloss" style="--i:1">Every Detail.</span></span>
           <span class="line"><span class="gloss gloss--gold" style="--i:2">Legendary</span></span>
           <span class="line"><span class="gloss" style="--i:3">Results.</span></span>
-        </h1>
+        </p>
         <p class="hero__sub">Premium automotive detailing with an uncompromising commitment to quality, precision, and attention to detail.</p>
         <ul class="hero__facts load-in" style="--i:5">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg>We come to you across Memphis</li>
@@ -114,6 +131,7 @@
         <div class="hero__actions load-in" style="--i:6">
           <a href="#book" class="btn btn--gold btn--lg">Book Your Detail</a>
           <a href="#services" class="btn btn--ghost btn--lg">Explore Our Services</a>
+          <a href="#work" class="btn btn--text btn--lg">View Our Work</a>
         </div>
         <div class="hero__contact load-in" style="--i:7">
           <p class="hero__accent">Your ride deserves legendary care.</p>
@@ -145,13 +163,14 @@
             <img src="assets/img/porsche-macan-720.webp"
                  srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-828.webp 828w, assets/img/porsche-macan-full.webp 1125w"
                  sizes="(min-width: 1240px) 470px, (min-width: 960px) 40vw, calc(100vw - 32px)"
-                 alt="Black Porsche Macan detailed by Legendary Detailing, gleaming in the sun"
+                 alt="Black Porsche Macan with a clean, glossy exterior after professional auto detailing by Legendary Detailing"
                  width="1125" height="1500" loading="lazy" decoding="async">
           </div>
           <figcaption>Porsche Macan, detailed by Legendary Detailing</figcaption>
         </figure>
         <div class="about__copy">
-          <h2 id="about-title" class="h2 reveal">Not just clean.<br>Legendary.</h2>
+          <h2 id="about-title" class="sec-title reveal">Professional Interior &amp; Exterior Detailing</h2>
+          <p class="h2 tagline reveal">Not just clean.<br>Legendary.</p>
           <p class="lead reveal">A quick wash makes a car look clean for a day. A proper detail makes it look cared for.</p>
           <p class="reveal">Legendary Detailing is a Memphis mobile auto detailing service built for drivers who notice the difference. We bring the detail to you, wherever your vehicle is parked in the city, and every vehicle gets the same meticulous, hands-on approach: the kind of care that shows in the depth of the paint, the clarity of the glass, and the way the cabin feels the moment you sit down.</p>
           <p class="reveal">We take real pride in our workmanship. The goal is simple: bring out the best possible appearance in every vehicle, treat your car with the respect it deserves, and make sure you're genuinely satisfied when we hand back your keys.</p>
@@ -172,13 +191,13 @@
     <section class="section services" id="services" aria-labelledby="services-title">
       <div class="container">
         <header class="section-head">
-          <h2 id="services-title" class="h2 reveal">Detailing services</h2>
+          <h2 id="services-title" class="h2 reveal">Our Auto Detailing Services</h2>
           <p class="section-head__sub reveal">Clear starting prices for Memphis drivers. Pick a package, add what you need, and we'll bring it to you.</p>
         </header>
 
         <div class="menu">
           <article class="pkg reveal" id="pkg-exterior">
-            <div class="pkg__media wipe"><img src="assets/img/infiniti-finish-480.webp" srcset="assets/img/infiniti-finish-480.webp 480w, assets/img/infiniti-finish.webp 1000w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Glossy hood and front fender of a detailed Infiniti" width="1000" height="650" loading="lazy" decoding="async"></div>
+            <div class="pkg__media wipe"><img src="assets/img/infiniti-finish-480.webp" srcset="assets/img/infiniti-finish-480.webp 480w, assets/img/infiniti-finish.webp 1000w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Glossy hood and front fender of an Infiniti after exterior car detailing" width="1000" height="650" loading="lazy" decoding="async"></div>
             <div class="pkg__body">
               <h3 class="pkg__title">Exterior Wash</h3>
               <p class="pkg__desc">Give your vehicle a refreshed, polished appearance with careful attention to exterior surfaces and finish.</p>
@@ -193,7 +212,7 @@
           </article>
 
           <article class="pkg reveal" id="pkg-interior">
-            <div class="pkg__media wipe"><img src="assets/img/audi-r8-cabin-480.webp" srcset="assets/img/audi-r8-cabin-480.webp 480w, assets/img/audi-r8-cabin.webp 860w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Quilted black leather seat inside a detailed Audi R8" width="860" height="860" loading="lazy" decoding="async"></div>
+            <div class="pkg__media wipe"><img src="assets/img/audi-r8-cabin-480.webp" srcset="assets/img/audi-r8-cabin-480.webp 480w, assets/img/audi-r8-cabin.webp 860w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Quilted black leather seat inside an Audi R8 after interior car detailing" width="860" height="860" loading="lazy" decoding="async"></div>
             <div class="pkg__body">
               <h3 class="pkg__title">Interior Detail</h3>
               <p class="pkg__desc">Refresh your vehicle's interior with detailed cleaning focused on restoring a comfortable, clean driving environment.</p>
@@ -208,7 +227,7 @@
           </article>
 
           <article class="pkg reveal" id="pkg-full">
-            <div class="pkg__media wipe"><img src="assets/img/porsche-macan-480.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Black Porsche Macan after a full detail" width="720" height="960" loading="lazy" decoding="async" style="object-position: 50% 38%"></div>
+            <div class="pkg__media wipe"><img src="assets/img/porsche-macan-480.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w" sizes="(min-width: 760px) 240px, calc(100vw - 32px)" alt="Black Porsche Macan after a complete auto detail" width="720" height="960" loading="lazy" decoding="async" style="object-position: 50% 38%"></div>
             <div class="pkg__body">
               <h3 class="pkg__title">Full Detail</h3>
               <p class="pkg__desc">Comprehensive interior and exterior care designed to give your vehicle an impressive overall appearance.</p>
@@ -259,6 +278,34 @@
           <a href="#book" class="btn btn--outline" data-package="Custom Detailing">Request a Quote</a>
         </article>
         <p class="services__fine reveal">Prices are starting prices. Your final price is confirmed before your appointment, based on your vehicle's size and condition.</p>
+
+        <!-- Service guide: plain-language detail on each service (also what search engines read) -->
+        <div class="guide">
+          <article class="guide__item reveal" id="interior-detailing">
+            <h3>Interior car detailing</h3>
+            <p>Your vehicle's cabin is where you spend your time, and it collects more than it shows: dust in the vents, crumbs between the seats, fingerprints on the screens, and grime on the surfaces you touch every day. Professional interior detailing goes further than a quick vacuum. Every part of the cabin gets careful attention, so it looks cleaner, feels fresher, and is more comfortable to drive.</p>
+            <p>The Interior Detail covers vacuuming, wiping down all surfaces, cleaning the door panels and windows, and trash removal, starting at $45. It's a good fit for daily drivers, family vehicles, and cars getting ready to sell.</p>
+            <a href="#book" class="guide__link" data-package="Interior Detail">Book an interior detail</a>
+          </article>
+          <article class="guide__item reveal" id="exterior-detailing">
+            <h3>Exterior car detailing</h3>
+            <p>Your vehicle's exterior is the first thing people notice, and in Memphis it takes a beating from sun, rain, pollen and road grime. Regular professional exterior care keeps a vehicle looking sharp and helps maintain its appearance over time.</p>
+            <p>The Exterior Wash covers the wash, wheel and tire cleaning, tire shine, and streak-free windows, starting at $20. Want more? Add buffing, UV protection or rain repellent, or upgrade to a handwash, to help the finish stand up to Memphis weather.</p>
+            <a href="#book" class="guide__link" data-package="Exterior Wash">Book an exterior wash</a>
+          </article>
+          <article class="guide__item reveal" id="complete-detailing">
+            <h3>Complete auto detailing</h3>
+            <p>When the whole vehicle needs attention, complete auto detailing brings the interior and exterior together in one appointment. Because Legendary Detailing comes to you, it's one visit with no drop-off and no waiting room.</p>
+            <p>The Full Detail combines the Exterior Wash and Interior Detail with tire shine and windows inside and out, starting at $80. For the most complete service, the Full Detail Package adds buffing, UV protectant and rain repellent, starting at $120. SUVs and trucks are +$20 on both. It's a great choice before a special occasion, after a road trip, or whenever your vehicle needs a fresh start.</p>
+            <a href="#book" class="guide__link" data-package="Full Detail">Book a complete detail</a>
+          </article>
+          <article class="guide__item reveal" id="custom-detailing">
+            <h3>Custom detailing quotes</h3>
+            <p>Every vehicle is different, and some need something a standard package doesn't cover. If you have a specific concern or a special request, ask about Custom Detailing.</p>
+            <p>Tell us your vehicle's year, make and model, what you'd like done, and where in Memphis you are. Photos help: text them to <a href="sms:+19014838862" data-sms>(901) 483-8862</a>. Legendary Detailing will review your request and reply with a personalized quote before anything is scheduled. Request a quote with the booking form, by phone, or by email.</p>
+            <a href="#book" class="guide__link" data-package="Custom Detailing">Request a quote</a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -268,28 +315,31 @@
     <section class="section work" id="work" aria-labelledby="work-title">
       <div class="container">
         <header class="section-head section-head--split">
-          <h2 id="work-title" class="h2 reveal">The results speak for themselves.</h2>
-          <p class="section-head__sub reveal">Attention to detail isn't just part of the process. It's what makes the difference.</p>
+          <div>
+            <h2 id="work-title" class="sec-title reveal">See Our Detailing Work</h2>
+            <p class="h2 tagline reveal">The results speak for themselves.</p>
+          </div>
+          <p class="section-head__sub reveal">Attention to detail isn't just part of the process. It's what makes the difference. Every photo here is a real vehicle detailed by Legendary Detailing.</p>
         </header>
 
         <div class="gallery" id="gallery">
           <figure class="tile tile--tall" data-full="assets/img/infiniti-convertible-full.webp">
             <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Infiniti convertible">
-              <img src="assets/img/infiniti-convertible-720.webp" srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w" sizes="(min-width: 1240px) 470px, (min-width: 960px) 38vw, (min-width: 640px) 100vw, calc(100vw - 32px)" alt="Deep red Infiniti convertible with mirror-like paint, parked indoors" width="720" height="960" loading="lazy" decoding="async">
+              <img src="assets/img/infiniti-convertible-720.webp" srcset="assets/img/infiniti-convertible-720.webp 720w, assets/img/infiniti-convertible-828.webp 828w, assets/img/infiniti-convertible-1200.webp 1200w" sizes="(min-width: 1240px) 470px, (min-width: 960px) 38vw, (min-width: 640px) 100vw, calc(100vw - 32px)" alt="Professionally detailed deep red Infiniti convertible with mirror-like paint, parked indoors" width="720" height="960" loading="lazy" decoding="async">
             </button>
             <figcaption>Infiniti convertible</figcaption>
           </figure>
 
           <figure class="tile tile--tall" data-full="assets/img/audi-r8-v10-full.webp">
             <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Audi R8 V10">
-              <img src="assets/img/audi-r8-v10-720.webp" srcset="assets/img/audi-r8-v10-720.webp 720w, assets/img/audi-r8-v10-828.webp 828w, assets/img/audi-r8-v10-1200.webp 1200w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Blue Audi R8 V10 with its doors and front trunk open during a detail" width="720" height="960" loading="lazy" decoding="async">
+              <img src="assets/img/audi-r8-v10-720.webp" srcset="assets/img/audi-r8-v10-720.webp 720w, assets/img/audi-r8-v10-828.webp 828w, assets/img/audi-r8-v10-1200.webp 1200w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Blue Audi R8 V10 with its doors and front trunk open during a Legendary Detailing appointment" width="720" height="960" loading="lazy" decoding="async">
             </button>
             <figcaption>Audi R8 V10</figcaption>
           </figure>
 
           <figure class="tile tile--tall" data-full="assets/img/porsche-macan-full.webp">
             <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Porsche Macan">
-              <img src="assets/img/porsche-macan-720.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-828.webp 828w, assets/img/porsche-macan-full.webp 1125w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Black Porsche Macan with clean wheels and glossy paint" width="720" height="960" loading="lazy" decoding="async">
+              <img src="assets/img/porsche-macan-720.webp" srcset="assets/img/porsche-macan-480.webp 480w, assets/img/porsche-macan-720.webp 720w, assets/img/porsche-macan-828.webp 828w, assets/img/porsche-macan-full.webp 1125w" sizes="(min-width: 1240px) 380px, (min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Black Porsche Macan with clean wheels and glossy paint after detailing" width="720" height="960" loading="lazy" decoding="async">
             </button>
             <figcaption>Porsche Macan</figcaption>
           </figure>
@@ -303,7 +353,7 @@
 
           <figure class="tile" data-full="assets/img/audi-r8-wheel.webp">
             <button class="tile__btn wipe" type="button" aria-label="View full-size photo: Audi R8 wheel close-up">
-              <img src="assets/img/audi-r8-wheel-480.webp" srcset="assets/img/audi-r8-wheel-480.webp 480w, assets/img/audi-r8-wheel.webp 600w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Audi R8 wheel with a red brake caliper" width="600" height="600" loading="lazy" decoding="async">
+              <img src="assets/img/audi-r8-wheel-480.webp" srcset="assets/img/audi-r8-wheel-480.webp 480w, assets/img/audi-r8-wheel.webp 600w" sizes="(min-width: 960px) 30vw, (min-width: 640px) 50vw, calc(100vw - 32px)" alt="Detailed Audi R8 wheel with a red brake caliper" width="600" height="600" loading="lazy" decoding="async">
             </button>
             <figcaption>Audi R8 wheel</figcaption>
           </figure>
@@ -318,7 +368,7 @@
 
         <div class="work__cta reveal">
           <p>Ready for your own transformation?</p>
-          <a href="#book" class="btn btn--gold btn--lg">Get a Quote</a>
+          <a href="#book" class="btn btn--gold btn--lg" data-package="Custom Detailing">Request a Quote</a>
         </div>
       </div>
     </section>
@@ -326,7 +376,7 @@
     <!-- ============ 5. WHY LEGENDARY ============ -->
     <section class="section why" aria-labelledby="why-title">
       <div class="container why__grid">
-        <h2 id="why-title" class="h2 reveal">Why Legendary Detailing?</h2>
+        <h2 id="why-title" class="h2 reveal">Why Choose Legendary Detailing?</h2>
         <div class="why__list">
           <article class="feature reveal">
             <svg class="feature__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="12"/><path d="M30 30l10 10"/><path d="M16 21h10M21 16v10"/></svg>
@@ -358,7 +408,8 @@
         <div class="area__copy">
           <h2 id="area-title" class="h2 reveal">Mobile detailing across Memphis</h2>
           <p class="lead reveal">Legendary Detailing is a Memphis business. Tell us where your vehicle is, and we'll bring the detail to you: at home, at work, or wherever it's parked.</p>
-          <ul class="area__list reveal" aria-label="Memphis neighborhoods we serve">
+          <p class="sr-only">Memphis neighborhoods we serve:</p>
+          <ul class="area__list reveal">
             <li>Downtown</li><li>Midtown</li><li>East Memphis</li><li>Cordova</li>
             <li>Whitehaven</li><li>Raleigh</li><li>Hickory Hill</li><li>Frayser</li>
           </ul>
@@ -424,7 +475,8 @@
       </div>
       <div class="container book__grid">
         <div class="book__intro">
-          <h2 id="book-title" class="h2 reveal">Your next detail <span class="gold">starts here.</span></h2>
+          <h2 id="book-title" class="sec-title reveal">Request Your Detailing Appointment</h2>
+          <p class="h2 tagline reveal">Your next detail <span class="gold">starts here.</span></p>
           <p class="lead reveal">Ready to give your vehicle the attention it deserves? Reach out today to discuss your detailing needs and request an appointment.</p>
           <p class="book__note reveal">This form sends a request, not a confirmed booking. We'll reach out personally to confirm your time, location, and price.</p>
           <div class="book__direct reveal">
@@ -626,8 +678,8 @@
       <div class="container footer__cta-inner">
         <h2 class="h3">Ready to make your ride legendary, Memphis?</h2>
         <div class="footer__cta-actions">
-          <a href="#book" class="btn btn--gold">Book Now</a>
-          <a href="tel:+19014838862" class="btn btn--ghost">Call (901) 483-8862</a>
+          <a href="#book" class="btn btn--gold">Book Your Detail</a>
+          <a href="tel:+19014838862" class="btn btn--ghost" aria-label="Call Legendary Detailing at (901) 483-8862">Call Legendary Detailing</a>
         </div>
       </div>
     </div>
@@ -646,6 +698,11 @@
           <li><a href="sms:+19014838862" data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text (901) 483-8862</a></li>
           <li><a href="mailto:xavierwade38@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>xavierwade38@gmail.com</a></li>
         </ul>
+        <!-- Business hours appear here once added in assets/js/content.js -->
+        <div class="footer__hours" id="footer-hours" hidden>
+          <h3>Hours</h3>
+          <ul id="hours-list"></ul>
+        </div>
       </div>
       <div class="footer__col">
         <h3>Quick links</h3>
