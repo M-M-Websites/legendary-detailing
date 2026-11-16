@@ -264,6 +264,93 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await ctx.close();
   });
 
+  /* UI practices (the 100-point polish checklist) */
+  await test('practices: type, tokens, states, placeholders and polish details', async () => {
+    const { ctx, page, problems } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
+    const css = await page.evaluate(() => {
+      const g = (sel, prop) => { const el = document.querySelector(sel); return el ? getComputedStyle(el)[prop] : null; };
+      const root = getComputedStyle(document.documentElement);
+      return {
+        tabular: g('.pkg__amount', 'fontVariantNumeric'),
+        estimateTabular: g('.estimate__value', 'fontVariantNumeric'),
+        space: root.getPropertyValue('--space-4').trim(),
+        shadow: root.getPropertyValue('--shadow-2').trim(),
+        h2Track: parseFloat(g('#services-title', 'letterSpacing')),
+        bodyLine: parseFloat(g('.about__copy > p:not(.lead):not(.tagline)', 'lineHeight')) / parseFloat(g('.about__copy > p:not(.lead):not(.tagline)', 'fontSize')),
+        inputFont: parseFloat(g('#f-vehicle', 'fontSize')),
+        textarea: g('#f-details', 'resize'),
+        btnWrap: g('.btn', 'whiteSpace'),
+        grain: getComputedStyle(document.body, '::after').backgroundImage.startsWith('url('),
+      };
+    });
+    assert(css.tabular.includes('tabular-nums') && css.estimateTabular.includes('tabular-nums'), 'tabular numbers on prices');
+    eq(css.space, '16px', 'spacing scale token');
+    assert(css.shadow.split('rgba').length === 3, 'layered (2-part) shadow token');
+    assert(css.h2Track < 0, 'large headings are tightened');
+    assert(css.bodyLine >= 1.5 && css.bodyLine <= 1.7, `body line-height ${css.bodyLine}`);
+    assert(css.inputFont >= 16, 'inputs are at least 16px (no iOS zoom)');
+    eq(css.textarea, 'vertical', 'textarea resizes vertically only');
+    eq(css.btnWrap, 'nowrap', 'button labels stay on one line');
+    assert(css.grain, 'film grain texture');
+    const text = await page.evaluate(() => document.body.innerText);
+    assert(!/\w'\w/.test(text), 'straight apostrophes in visible text');
+    const noPh = await page.$$eval('img[src*="assets/img/"]:not([src*="logo"])', (n) => n.filter((i) => !i.style.getPropertyValue('--ph')).map((i) => i.getAttribute('src')));
+    eq(noPh.length, 0, `photos without a placeholder colour: ${noPh}`);
+    const small = await page.$$eval('footer a, .guide__link, .hero__links a, .book__link', (n) => n.filter((a) => a.getBoundingClientRect().height < 44 && a.offsetParent).map((a) => a.textContent.trim()));
+    eq(small.length, 0, `links shorter than 44px: ${small}`);
+    eq(await page.locator('.spot__light').count(), await page.locator('.spot').count(), 'spotlight on every card (pointer devices)');
+    eq(problems.length, 0, problems.join('; '));
+    await ctx.close();
+  });
+
+  await test('practices: form validates on blur, blocks double submits, shows progress and offers retry', async () => {
+    const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
+    let calls = 0;
+    let release;
+    const gate = new Promise((r) => { release = r; });
+    await page.route('https://formsubmit.co/**', async (route) => {
+      calls += 1;
+      await gate;
+      await route.fulfill({ status: 500, contentType: 'application/json', body: '{"success":"false"}' });
+    });
+    await fillStep1(page, 'Full Detail', 'Car');
+    await page.click('[data-next]');
+    await page.fill('#f-phone', '555');
+    await page.focus('#f-name');
+    assert(await page.isVisible('#e-phone'), 'phone error shows when leaving the field');
+    eq(await page.getAttribute('#f-phone', 'aria-invalid'), 'true', 'aria-invalid set');
+    await page.fill('#f-phone', '(901) 555-0100');
+    assert(!(await page.isVisible('#e-phone')), 'error clears live once fixed');
+    await page.fill('#f-name', 'Jordan Smith');
+    await page.click('#form-submit');
+    await page.waitForFunction(() => document.getElementById('form-submit').disabled);
+    assert(/Sending your request/.test(await page.textContent('#form-status')), 'progress text while sending');
+    await page.click('#form-submit', { force: true }).catch(() => {});
+    release();
+    await page.waitForSelector('#form-error', { state: 'visible' });
+    eq(calls, 1, 'only one request despite a second click');
+    assert(!(await page.isDisabled('#form-submit')), 'button re-enabled after failure');
+    eq(await page.inputValue('#f-name'), 'Jordan Smith', 'data kept after failure');
+    assert(await page.isVisible('.form__retry'), 'retry button');
+    await page.unroute('https://formsubmit.co/**');
+    await page.route('https://formsubmit.co/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":"true"}' }));
+    await page.click('.form__retry');
+    await page.waitForSelector('#form-success', { state: 'visible' });
+    eq(await page.textContent('#success-title'), 'Thanks, Jordan. Request received.', 'retry succeeds with personal thanks');
+    await ctx.close();
+  });
+
+  await test('practices: layout holds at 200% zoom and with large system text', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 640, height: 450 }, deviceScaleFactor: 2 });
+    const page = await ctx.newPage();
+    await page.goto(base + '/', { waitUntil: 'networkidle' });
+    await page.addStyleTag({ content: 'html { font-size: 125% !important; }' });
+    await page.waitForTimeout(300);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    eq(overflow, 0, 'horizontal overflow at 200% zoom with 125% text');
+    await ctx.close();
+  });
+
   /* 3. Price estimator */
   await test('booking: price estimate follows the flyer pricing', async () => {
     const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
@@ -339,12 +426,15 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await page.fill('#f-phone', '(901) 555-0100');
     await page.fill('#f-email', 'test@example.com');
     await page.fill('#f-location', '38103');
-    await page.selectOption('#f-time', 'Morning');
+    await page.locator('input[name="Preferred Time"][value="Morning"]').check({ force: true });
     await page.fill('#f-details', 'Pet hair in the back seat.');
     await page.click('#form-submit');
     await page.waitForSelector('#form-success', { state: 'visible' });
     const msg = await page.textContent('#form-success p');
-    eq(msg.trim(), "Thank you for contacting Legendary Detailing! We've received your request and will be in touch to discuss your appointment.", 'confirmation text');
+    eq(msg.trim(), "Thank you for contacting Legendary Detailing! We\u2019ve received your request and will be in touch to discuss your appointment.", 'confirmation text');
+    eq(await page.textContent('#success-title'), 'Thanks, Test. Request received.', 'personal thank-you');
+    assert(/What happens next/.test(await page.textContent('.form__next-step')), 'success says what happens next');
+    eq(payload['Preferred Time'], 'Morning', 'time chip value');
     assert(payload, 'no payload sent');
     eq(payload.Package, 'Full Detail Package', 'Package');
     eq(payload['Vehicle Type'], 'SUV / Truck', 'Vehicle Type');
@@ -454,7 +544,7 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     assert(await p2.isVisible('#reviews-more a'), 'read-all-reviews link');
     assert(await p2.isVisible('#footer-hours'), 'hours shown');
     eq(await p2.locator('#hours-list li').count(), 1, 'invalid hours entry ignored');
-    eq((await p2.textContent('#hours-list li')).replace(/\s+/g, ' ').trim(), 'Mon - Fri8 AM - 6:30 PM', 'hours formatting');
+    eq((await p2.textContent('#hours-list li')).replace(/\s+/g, ' ').trim(), 'Mon - Fri8 AM \u2013 6:30 PM', 'hours formatting');
     const biz = JSON.parse(await p2.$eval('#ld-json', (s) => s.textContent))['@graph'].find((n) => n['@type'] === 'AutomotiveBusiness');
     eq(JSON.stringify(biz.sameAs), JSON.stringify(['https://instagram.com/example', 'https://g.page/r/example']), 'sameAs from content.js');
     eq(biz.openingHoursSpecification[0].closes, '18:30', 'hours in structured data');

@@ -8,7 +8,7 @@ Premium, fully responsive website for **Legendary Detailing**, a mobile auto det
   - Lighthouse scores 100 for Accessibility, Best Practices and SEO.
   - Performance is 99 on desktop and 91+ on mobile with simulated slow 4G.
   - axe-core finds no accessibility violations.
-  - A 24-test regression suite is included (see *Testing*).
+  - A 27-test regression suite is included (see *Testing*).
 
 ---
 
@@ -96,6 +96,42 @@ Accessibility and fallbacks:
 - **Keyboard:** the booking form works fully from the keyboard.
 
 ---
+
+## Design system and UI polish
+
+The site follows a 100-point UI checklist (spacing, typography, colour, controls, forms, motion, loading states, microcopy, mobile and accessibility). The main pieces:
+- **Tokens** at the top of `assets/css/styles.css`:
+  - a spacing scale (`--space-1` to `--space-9`)
+  - layered two-part shadows (`--shadow-1` to `--shadow-3`) and a gold glow
+  - motion durations (`--dur-fast`, `--dur`)
+  - greys tinted toward the brand gold
+- **Type:**
+  - tightened large headings and balanced or pretty line wrapping
+  - tabular digits on every price
+  - curly quotes and en dashes in all visible copy
+- **Controls:**
+  - one-line button labels, a pressed state (scale 0.97) and a disabled state
+  - balanced padding on buttons with an icon
+  - 44px tap targets throughout
+- **Form:**
+  - validates when you leave a field, then live once there's an error
+  - a 4px shake on errors, error icons, and errors linked to fields for screen readers
+  - chips for preferred time
+  - double-submit protection with "Sending…" and "Still sending…" progress text
+  - a retry button that keeps everything entered
+  - a personal thank-you ("Thanks, Jordan.") that says what happens next
+- **Motion:**
+  - only transform and opacity are animated, with a 50ms stagger
+  - hover scales stay at 1.03–1.04
+  - FAQ answers fade and rise in
+  - the hero copy drifts and fades as you scroll
+- **Eye candy:**
+  - a static film-grain texture and a soft gold glow behind the hero headline
+  - metallic-gold prices
+  - a cursor spotlight on cards and a subtle 3D tilt on gallery photos (mouse and trackpad only)
+  - shimmering placeholders in each photo's own colour while images load
+
+Everything that moves is switched off for visitors who ask their device for reduced motion.
 
 ## Testing
 

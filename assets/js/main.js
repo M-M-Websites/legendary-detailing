@@ -61,6 +61,7 @@
   const quickbar = $('.quickbar');
   const hero = $('#home');
   const heroMedia = $('#hero-media');
+  const heroContent = $('.hero__content');
   const bookSection = $('#book');
   const parallaxOK = !reduceMotion && window.matchMedia('(min-width: 721px)').matches;
   let bookVisible = false;
@@ -72,7 +73,12 @@
     nav.classList.toggle('is-scrolled', y > 40);
     if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
     if (quickbar) quickbar.classList.toggle('is-visible', y > hero.offsetHeight * 0.55 && !bookVisible && !menuOpen);
-    if (parallaxOK && heroMedia && y < hero.offsetHeight) heroMedia.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
+    if (parallaxOK && heroMedia && y < hero.offsetHeight) {
+      heroMedia.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
+      const k = Math.min(y / (hero.offsetHeight * 0.85), 1);
+      heroContent.style.transform = `translate3d(0, ${y * -0.08}px, 0)`;
+      heroContent.style.opacity = String(1 - k * 0.85);
+    }
     ticking = false;
   };
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
@@ -114,7 +120,7 @@
   const revealEls = $$('.reveal, .wipe');
   // stagger siblings inside groups so they arrive as a sequence
   $$('.menu, .why__list, .steps, .gallery, .faq__list, .pillars').forEach((group) => {
-    $$('.reveal, .wipe', group).forEach((el, i) => { el.style.transitionDelay = `${Math.min(i * 0.07, 0.42)}s`; });
+    $$('.reveal, .wipe', group).forEach((el, i) => { el.style.transitionDelay = `${Math.min(i * 0.05, 0.35)}s`; });
   });
   if ('IntersectionObserver' in window && !reduceMotion) {
     const io = new IntersectionObserver((entries) => {
@@ -138,21 +144,9 @@
   $$('.qa').forEach((qa) => {
     const summary = $('summary', qa);
     const body = $('.qa__body', qa);
-    let busy = false;
-    summary.addEventListener('click', (e) => {
-      if (reduceMotion || !body.animate) return; // native toggle
-      e.preventDefault();
-      if (busy) return;
-      busy = true;
-      const opts = { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)' };
-      if (!qa.open) {
-        qa.open = true;
-        const h = body.scrollHeight;
-        body.animate([{ height: '0px', opacity: 0 }, { height: `${h}px`, opacity: 1 }], opts).onfinish = () => { busy = false; };
-      } else {
-        const h = body.scrollHeight;
-        body.animate([{ height: `${h}px`, opacity: 1 }, { height: '0px', opacity: 0 }], { ...opts, duration: 320 }).onfinish = () => { qa.open = false; busy = false; };
-      }
+    qa.addEventListener('toggle', () => {
+      if (!qa.open || reduceMotion) return;
+      body.classList.remove('is-entering'); void body.offsetWidth; body.classList.add('is-entering');
     });
   });
 
@@ -239,7 +233,7 @@
     hours.forEach((h) => {
       const li = document.createElement('li');
       const day = document.createElement('span'); day.textContent = h.label || h.days.join(', ');
-      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} - ${fmtTime(h.closes)}`;
+      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} \u2013 ${fmtTime(h.closes)}`;
       li.append(day, time); list.appendChild(li);
     });
     $('#footer-hours').hidden = false;
@@ -294,6 +288,47 @@
     reviewsSection.hidden = false;
   }
 
+  /* ---------- Image placeholders: shimmer until each photo has loaded ---------- */
+  $$('.wipe').forEach((w) => {
+    const img = $('img', w);
+    if (!img || (img.complete && img.naturalWidth)) return;
+    w.classList.add('is-loading');
+    const done = () => w.classList.remove('is-loading');
+    img.addEventListener('load', done, { once: true });
+    img.addEventListener('error', done, { once: true });
+  });
+
+  /* ---------- Pointer effects: card spotlight and gallery tilt (mouse/trackpad only) ---------- */
+  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    $$('.spot').forEach((card) => {
+      const light = document.createElement('span');
+      light.className = 'spot__light';
+      light.setAttribute('aria-hidden', 'true');
+      card.prepend(light);
+      let raf = 0;
+      card.addEventListener('pointermove', (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+          raf = 0;
+        });
+      });
+    });
+    $$('#gallery .tile').forEach((tile) => {
+      const btn = $('.tile__btn', tile);
+      tile.addEventListener('pointermove', (e) => {
+        const r = tile.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        btn.style.setProperty('--ry', `${(px * 6).toFixed(2)}deg`);
+        btn.style.setProperty('--rx', `${(-py * 6).toFixed(2)}deg`);
+      });
+      tile.addEventListener('pointerleave', () => { btn.style.setProperty('--rx', '0deg'); btn.style.setProperty('--ry', '0deg'); });
+    });
+  }
+
   /* ---------- Booking form ---------- */
   const form = $('#booking-form');
   if (!form) return;
@@ -307,6 +342,7 @@
   const estimateNote = $('#estimate-note');
   const estimateInput = $('#f-estimate');
   const summaryBox = $('#form-summary');
+  const statusEl = $('#form-status');
   const dateInput = $('#f-date');
   if (dateInput) {
     const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
@@ -438,9 +474,13 @@
       if (phoneBad) problems.push(phone);
       if (emailBad) problems.push(email);
     }
-    if (problems.length && focusFirst) problems[0].focus();
+    if (problems.length && focusFirst) {
+      problems[0].focus();
+      if (!reduceMotion) problems.forEach((el) => { const f = el.closest('.field'); f.classList.remove('is-shake'); void f.offsetWidth; f.classList.add('is-shake'); });
+    }
     return problems.length === 0;
   };
+  form.addEventListener('animationend', (e) => { if (e.target.classList.contains('is-shake')) e.target.classList.remove('is-shake'); });
 
   $('[data-next]', form).addEventListener('click', () => { if (validateStep(1)) goTo(2); });
   $('[data-back]', form).addEventListener('click', () => goTo(1));
@@ -461,9 +501,18 @@
     loc.addEventListener('input', checkZip);
   }
 
-  ['#f-name', '#f-phone', '#f-email'].forEach((sel) => $(sel).addEventListener('input', (e) => {
-    if (e.target.closest('.field').classList.contains('is-invalid')) validateStep(2, false);
-  }));
+  // Check a field when the user leaves it (once they've typed something), then re-check live while it shows an error
+  const fieldRules = {
+    'f-name': [(v) => v.trim().length >= 2, 'e-name'],
+    'f-phone': [(v) => { const d = v.replace(/\D/g, ''); return d.length === 10 || (d.length === 11 && d.startsWith('1')); }, 'e-phone'],
+    'f-email': [(v) => v.trim() === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()), 'e-email'],
+  };
+  Object.entries(fieldRules).forEach(([id, [ok, errId]]) => {
+    const input = document.getElementById(id);
+    const check = () => setFieldError(input.closest('.field'), document.getElementById(errId), !ok(input.value));
+    input.addEventListener('blur', () => { if (input.value.trim() !== '' || input.closest('.field').classList.contains('is-invalid')) check(); });
+    input.addEventListener('input', () => { if (input.closest('.field').classList.contains('is-invalid')) check(); });
+  });
   // Enter key on step 1 moves forward instead of submitting
   form.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && current === 1 && e.target.tagName !== 'TEXTAREA' && e.target.type !== 'button') {
@@ -500,6 +549,9 @@
     if (data.email) data._replyto = data.email;
     submitBtn.classList.add('is-loading');
     submitBtn.setAttribute('aria-busy', 'true');
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Sending your request\u2026';
+    const slowTimer = setTimeout(() => { statusEl.textContent = 'Still sending, one moment\u2026'; }, 4000);
     try {
       const res = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
         method: 'POST',
@@ -509,17 +561,23 @@
       const json = await res.json().catch(() => ({}));
       if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || `HTTP ${res.status}`);
       track('Booking request sent', { package: data.Package || '', vehicle: data['Vehicle Type'] || '' });
+      const first = (data['Full Name'] || '').split(/\s+/)[0];
+      $('#success-title').textContent = first ? `Thanks, ${first}. Request received.` : 'Request received.';
       form.hidden = true;
       success.hidden = false;
       success.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
       success.focus({ preventScroll: true });
     } catch (err) {
       track('Booking request failed', { reason: String(err.message || '').slice(0, 60) });
-      errorBox.innerHTML = `Your request didn't go through. Call or text <a href="${BUSINESS.tel}">${BUSINESS.phone}</a>, or <a href="${mailtoFallback(data)}">email your request</a> instead.`;
+      errorBox.innerHTML = `Your request didn\u2019t go through, and everything you entered is still here. Try again, call or text <a href="${BUSINESS.tel}">${BUSINESS.phone}</a>, or <a href="${mailtoFallback(data)}">email your request</a> instead.<br><button type="button" class="btn btn--outline btn--sm form__retry">Try again</button>`;
       errorBox.hidden = false;
+      $('.form__retry', errorBox).addEventListener('click', () => (form.requestSubmit ? form.requestSubmit() : submitBtn.click()));
     } finally {
+      clearTimeout(slowTimer);
+      statusEl.textContent = '';
       submitBtn.classList.remove('is-loading');
       submitBtn.removeAttribute('aria-busy');
+      submitBtn.disabled = false;
     }
   });
 })();
