@@ -2,3 +2,4 @@ tests/node_modules/
 tests/package-lock.json
 .DS_Store
 tests/.schemaorg.jsonld
+.playwright-mcp/
