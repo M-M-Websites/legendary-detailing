@@ -72,17 +72,15 @@
     new IntersectionObserver(([e]) => { bookVisible = e.isIntersecting; onScroll(); }, { threshold: 0.12 }).observe(bookSection);
   }
 
-  /* ---------- Mobile menu: focus moves in, the page behind is inert, Esc and links close it ---------- */
+  /* ---------- Mobile menu: focus moves in and is trapped, the page behind can't scroll, Esc and links close it ---------- */
   const toggle = $('#nav-toggle');
   const links = $('#nav-links');
-  const behind = [$('#main'), $('#contact'), quickbar].filter(Boolean);
   const setMenu = (open, { restoreFocus = false } = {}) => {
     menuOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     links.classList.toggle('is-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
-    behind.forEach((el) => { el.inert = open; });
     if (open) requestAnimationFrame(() => { const first = $('a', links); if (first) first.focus({ preventScroll: true }); });
     else if (restoreFocus) toggle.focus();
     onScroll();

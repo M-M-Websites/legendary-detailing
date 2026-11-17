@@ -81,7 +81,8 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
 (async () => {
   const server = await startServer();
   const base = `http://127.0.0.1:${server.address().port}`;
-  const browser = await chromium.launch();
+  // Use Playwright's own Chromium; fall back to a preinstalled one (e.g. a sandbox with no download access).
+  const browser = await chromium.launch().catch(() => chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/opt/pw-browsers/chromium' }));
   console.log(`\nLegendary Detailing test suite (${base})\n`);
 
   /* 1. Layout at every common screen size */
@@ -100,7 +101,7 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
       await page.waitForTimeout(400);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       eq(overflow, 0, 'horizontal overflow (px)');
-      const broken = await page.evaluate(() => [...document.images].filter((i) => !i.closest('[hidden]') && i.id !== 'lightbox-img' && (!i.complete || i.naturalWidth === 0)).map((i) => i.src));
+      const broken = await page.evaluate(() => [...document.images].filter((i) => !i.closest('[hidden]') && i.id !== 'lightbox-img' && i.getClientRects().length && getComputedStyle(i).visibility !== 'hidden' && (!i.complete || i.naturalWidth === 0)).map((i) => i.src));
       eq(broken.length, 0, `broken images ${broken.join(', ')}`);
       eq(await page.locator('h1').count(), 1, 'exactly one h1');
       const tagline = await page.locator('.hero__title').innerText();
@@ -168,7 +169,7 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
   /* Memphis targeting */
   await test('memphis: local copy, service area section and soft ZIP check', async () => {
     const { ctx, page, problems } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
-    assert(/Memphis, TN/.test(await page.textContent('.hero__eyebrow')), 'hero names Memphis');
+    assert(/Memphis, TN/.test(await page.textContent('h1')), 'hero names Memphis');
     assert(await page.locator('#service-area').count() === 1, 'service area section');
     const hoods = await page.$$eval('.area__list li', (l) => l.map((x) => x.textContent.trim()));
     assert(hoods.length >= 6 && hoods.includes('Midtown') && hoods.includes('Cordova'), `neighborhoods: ${hoods}`);
@@ -222,8 +223,8 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     words.forEach(([h, w]) => assert(w >= 80 && w <= 150, `"${h}" has ${w} words (want 80-150)`));
     const alts = await page.$$eval('main img, header img, footer img', (n) => n.map((i) => ({ src: i.getAttribute('src'), alt: i.getAttribute('alt'), deco: !!i.closest('[aria-hidden="true"]') })));
     alts.forEach((i) => assert(i.alt !== null && (i.deco || i.alt.length >= 10 || i.alt === 'Legendary Detailing'), `weak alt on ${i.src}: "${i.alt}"`));
-    const decoBg = await page.getAttribute('.book__bg img', 'alt');
-    eq(decoBg, '', 'decorative background image has empty alt');
+    const deco = await page.$$eval('[aria-hidden="true"] img', (n) => n.map((i) => i.getAttribute('alt')));
+    assert(deco.length >= 1 && deco.every((a) => a === ''), `decorative images need empty alt: ${JSON.stringify(deco)}`);
     const ctas = await page.$$eval('a.btn, a.guide__link', (n) => n.map((a) => a.textContent.replace(/\s+/g, ' ').trim()));
     for (const c of ['Book Your Detail', 'Request a Quote', 'Call Legendary Detailing', 'View Our Work']) assert(ctas.includes(c), `CTA "${c}" missing`);
     const html = await page.content();
@@ -280,7 +281,14 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
         inputFont: parseFloat(g('#f-vehicle', 'fontSize')),
         textarea: g('#f-details', 'resize'),
         btnWrap: g('.btn', 'whiteSpace'),
-        grain: getComputedStyle(document.body, '::after').backgroundImage.startsWith('url('),
+        radiusTokens: ['--radius-sm', '--radius-lg', '--radius-pill'].map((t) => root.getPropertyValue(t).trim()),
+        accent: root.getPropertyValue('--color-accent').trim().toUpperCase(),
+        primaryBg: g('.hero__actions .btn--primary', 'backgroundColor'),
+        scrollPad: parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop),
+        navH: document.getElementById('nav').getBoundingClientRect().height,
+        headWrap: g('#services-title', 'textWrap') || g('#services-title', 'textWrapStyle'),
+        sizeAdjust: getComputedStyle(document.documentElement).webkitTextSizeAdjust || getComputedStyle(document.documentElement).textSizeAdjust,
+        touch: g('.btn', 'touchAction'),
       };
     });
     assert(css.tabular.includes('tabular-nums') && css.estimateTabular.includes('tabular-nums'), 'tabular numbers on prices');
@@ -291,14 +299,24 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     assert(css.inputFont >= 16, 'inputs are at least 16px (no iOS zoom)');
     eq(css.textarea, 'vertical', 'textarea resizes vertically only');
     eq(css.btnWrap, 'nowrap', 'button labels stay on one line');
-    assert(css.grain, 'film grain texture');
+    eq(css.radiusTokens.join(','), '4px,12px,999px', 'three radius tokens');
+    eq(css.accent, '#C4150F', 'flyer red accent token');
+    eq(css.primaryBg, 'rgb(196, 21, 15)', 'primary buttons use the accent');
+    assert(css.scrollPad >= css.navH, `anchor offset ${css.scrollPad} clears the ${css.navH}px header`);
+    assert(css.navH <= 72, 'sticky header at most 72px');
+    assert(/balance/.test(css.headWrap), 'headings balance their lines');
+    eq(css.touch, 'manipulation', 'buttons skip the double-tap delay');
     const text = await page.evaluate(() => document.body.innerText);
     assert(!/\w'\w/.test(text), 'straight apostrophes in visible text');
     const noPh = await page.$$eval('img[src*="assets/img/"]:not([src*="logo"])', (n) => n.filter((i) => !i.style.getPropertyValue('--ph')).map((i) => i.getAttribute('src')));
     eq(noPh.length, 0, `photos without a placeholder colour: ${noPh}`);
     const small = await page.$$eval('footer a, .guide__link, .hero__links a, .book__link', (n) => n.filter((a) => a.getBoundingClientRect().height < 44 && a.offsetParent).map((a) => a.textContent.trim()));
     eq(small.length, 0, `links shorter than 44px: ${small}`);
-    eq(await page.locator('.spot__light').count(), await page.locator('.spot').count(), 'spotlight on every card (pointer devices)');
+    const fonts = await page.evaluate(() => performance.getEntriesByType('resource').filter((r) => /\.woff2$/.test(r.name)).map((r) => r.name));
+    assert(fonts.length === 1 && fonts[0].includes('/assets/fonts/'), `one self-hosted font file: ${fonts}`);
+    eq(await page.locator('[target="_blank"]').count(), 0, 'links open in the same tab');
+    const sel = await page.evaluate(() => getComputedStyle(document.querySelector('p'), '::selection').backgroundColor);
+    eq(sel, 'rgb(23, 26, 32)', 'branded text selection');
     eq(problems.length, 0, problems.join('; '));
     await ctx.close();
   });
@@ -586,7 +604,7 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
   /* 10. Fallbacks */
   await test('fallback: everything is visible and usable with JavaScript turned off', async () => {
     const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
-    const hidden = await page.evaluate(() => [...document.querySelectorAll('.reveal, .load-in, .hero__title .gloss')].filter((el) => getComputedStyle(el).opacity !== '1').length);
+    const hidden = await page.evaluate(() => [...document.querySelectorAll('.hero .enter, .hero__h1 .ln > span, .statement, .step, .pkg')].filter((el) => getComputedStyle(el).opacity !== '1' || getComputedStyle(el).transform !== 'none').length);
     eq(hidden, 0, 'elements stuck invisible');
     assert(await page.isVisible('#step-1') && await page.isVisible('#step-2'), 'both form steps visible');
     assert(await page.isVisible('#form-submit'), 'submit visible');
@@ -599,10 +617,11 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
   await test('fallback: reduced-motion users get a static, fully visible page', async () => {
     const { ctx, page, problems } = await openPage(browser, base, { viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     await page.waitForTimeout(150);
-    const hidden = await page.evaluate(() => [...document.querySelectorAll('.reveal, .load-in')].filter((el) => getComputedStyle(el).opacity !== '1').length);
-    eq(hidden, 0, 'hidden elements');
-    const marquee = await page.$eval('.band__track', (el) => getComputedStyle(el).animationName);
-    eq(marquee, 'none', 'marquee stopped');
+    const hidden = await page.evaluate(() => [...document.querySelectorAll('.hero .enter, .hero__h1 .ln > span')].filter((el) => getComputedStyle(el).opacity !== '1' || getComputedStyle(el).transform !== 'none').length);
+    eq(hidden, 0, 'hidden or moving hero elements');
+    assert(!(await page.locator('.statement.is-armed').count()), 'statement shows in full ink, no scroll effect');
+    assert(!(await page.locator('.chapters.is-pinned').count()), 'process section is not pinned');
+    eq(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto', 'anchor links jump instantly');
     eq(problems.length, 0, problems.join('; '));
     await ctx.close();
   });
@@ -624,7 +643,70 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     eq(res.status(), 404, 'status');
     assert(/wrong turn/i.test(await page.textContent('h1')), '404 headline');
     assert(await page.locator('a.btn').count() === 1, 'home button');
+    for (const href of ['/legendary-detailing/', '/legendary-detailing/#services', '/legendary-detailing/#contact', 'tel:+19014838862']) {
+      assert(await page.locator(`a[href="${href}"]`).count() >= 1, `404 links to ${href}`);
+    }
+    eq(await page.locator('header').count(), 1, '404 keeps the header');
+    eq(await page.locator('footer').count(), 1, '404 keeps the footer');
     await ctx.close();
+  });
+
+  /* New design: interaction details */
+  await test('details: FAQ answer is linkable, copy email confirms, services photo follows the package', async () => {
+    const { ctx, page, problems } = await openPage(browser, base, { viewport: { width: 1440, height: 900 }, permissions: ['clipboard-read', 'clipboard-write'] }, '#faq-cost');
+    assert(await page.evaluate(() => document.getElementById('faq-cost').open), '#faq-cost opens its answer');
+    await page.locator('#faq-time summary').click();
+    await page.waitForFunction(() => location.hash === '#faq-time');
+    await page.locator('.copy').click();
+    await page.waitForFunction(() => document.querySelector('.copy').classList.contains('is-copied'));
+    eq((await page.textContent('.copy__label')).trim(), 'Copied', 'copy label');
+    eq(await page.textContent('#copy-status'), 'Email address copied', 'copy announced');
+    eq(await page.evaluate(() => navigator.clipboard.readText()), EMAIL, 'clipboard holds the email');
+    await page.locator('#pkg-interior').scrollIntoViewIfNeeded();
+    await page.locator('#pkg-interior').hover();
+    eq(await page.getAttribute('#config-frame img.is-active', 'data-shot'), 'interior', 'frame shows the hovered package');
+    eq(problems.length, 0, problems.join('; '));
+    await ctx.close();
+  });
+
+  await test('details: process steps take turns while the section is pinned (desktop)', async () => {
+    const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
+    assert(await page.locator('.chapters.is-pinned').count() === 1, 'pinned on desktop');
+    const at = async (p) => {
+      await page.evaluate((p) => { const c = document.getElementById('steps'); const top = c.getBoundingClientRect().top + scrollY; window.scrollTo({ top: top + (c.offsetHeight - innerHeight) * p, behavior: 'instant' }); }, p);
+      await page.waitForTimeout(250);
+      return page.evaluate(() => [...document.querySelectorAll('.step')].findIndex((s) => s.classList.contains('is-active')));
+    };
+    eq(await at(0.05), 0, 'step 1 first');
+    eq(await at(0.5), 1, 'step 2 in the middle');
+    eq(await at(0.95), 2, 'step 3 last');
+    eq(await at(0.05), 0, 'runs back on the way up');
+    await ctx.close();
+  });
+
+  await test('details: open mobile menu takes and traps focus, locks scroll and gives focus back on Escape', async () => {
+    const { ctx, page } = await openPage(browser, base, { ...devices['iPhone 13'] });
+    await page.click('#nav-toggle');
+    await page.waitForTimeout(300);
+    eq(await page.evaluate(() => document.activeElement.getAttribute('href')), '#home', 'focus moves to the first menu link');
+    for (let i = 0; i < 12; i++) await page.keyboard.press('Tab');
+    assert(await page.evaluate(() => !!document.activeElement.closest('#nav')), 'Tab stays inside the open menu');
+    eq(await page.evaluate(() => document.body.style.overflow), 'hidden', 'page behind does not scroll');
+    await page.keyboard.press('Escape');
+    eq(await page.evaluate(() => document.activeElement.id), 'nav-toggle', 'focus returns to the toggle');
+    await ctx.close();
+  });
+
+  await test('micro-ui-checklist.md lists all 100 practices, each DONE with evidence or N/A with a reason', async () => {
+    const md = fs.readFileSync(path.join(ROOT, 'micro-ui-checklist.md'), 'utf8');
+    const rows = md.split('\n').filter((l) => /^\|\s*MU-\d{3}\s*\|/.test(l)).map((l) => l.split('|').map((c) => c.trim()));
+    eq(rows.length, 100, 'rows');
+    rows.forEach((r, i) => {
+      eq(r[1], `MU-${String(i + 1).padStart(3, '0')}`, 'order');
+      assert(r[2].length > 3, `${r[1]} title`);
+      assert(r[3] === 'DONE' || r[3] === 'N/A', `${r[1]} status ${r[3]}`);
+      assert(r[4] && r[4].length >= 20 && !/partial|todo|tbd/i.test(r[4]), `${r[1]} needs evidence or a reason`);
+    });
   });
 
   await browser.close();
