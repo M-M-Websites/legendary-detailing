@@ -48,37 +48,21 @@
     else if (href === '#book') track('Book button click', { location: where, label: a.textContent.trim().slice(0, 40) });
   });
 
-  /* ---------- Page-load sequence (hero) ---------- */
-  const heroImg = $('.hero__media img');
-  const markLoaded = () => root.classList.add('is-loaded');
-  // Start right away: the headline never waits on the photo download (keeps first paint fast)
-  if (reduceMotion || !heroImg) markLoaded();
-  else requestAnimationFrame(() => requestAnimationFrame(markLoaded));
+  /* ---------- Page ready (the hero entrance itself is pure CSS, so it never waits on this file) ---------- */
+  requestAnimationFrame(() => root.classList.add('is-loaded'));
 
-  /* ---------- Scroll-linked UI: nav, progress bar, quick bar, hero parallax ---------- */
+  /* ---------- Header state and the phone quick bar ---------- */
   const nav = $('#nav');
-  const bar = $('#progress-bar');
   const quickbar = $('.quickbar');
   const hero = $('#home');
-  const heroMedia = $('#hero-media');
-  const heroContent = $('.hero__content');
   const bookSection = $('#book');
-  const parallaxOK = !reduceMotion && window.matchMedia('(min-width: 721px)').matches;
   let bookVisible = false;
   let menuOpen = false;
   let ticking = false;
   const onScroll = () => {
     const y = window.scrollY;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    nav.classList.toggle('is-scrolled', y > 40);
-    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
+    nav.classList.toggle('is-scrolled', y > 8);
     if (quickbar) quickbar.classList.toggle('is-visible', y > hero.offsetHeight * 0.55 && !bookVisible && !menuOpen);
-    if (parallaxOK && heroMedia && y < hero.offsetHeight) {
-      heroMedia.style.transform = `translate3d(0, ${y * 0.22}px, 0)`;
-      const k = Math.min(y / (hero.offsetHeight * 0.85), 1);
-      heroContent.style.transform = `translate3d(0, ${y * -0.08}px, 0)`;
-      heroContent.style.opacity = String(1 - k * 0.85);
-    }
     ticking = false;
   };
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
@@ -88,67 +72,173 @@
     new IntersectionObserver(([e]) => { bookVisible = e.isIntersecting; onScroll(); }, { threshold: 0.12 }).observe(bookSection);
   }
 
-  /* ---------- Mobile menu ---------- */
+  /* ---------- Mobile menu: focus moves in, the page behind is inert, Esc and links close it ---------- */
   const toggle = $('#nav-toggle');
   const links = $('#nav-links');
-  const setMenu = (open) => {
+  const behind = [$('#main'), $('#contact'), quickbar].filter(Boolean);
+  const setMenu = (open, { restoreFocus = false } = {}) => {
     menuOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     links.classList.toggle('is-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
+    behind.forEach((el) => { el.inert = open; });
+    if (open) requestAnimationFrame(() => { const first = $('a', links); if (first) first.focus({ preventScroll: true }); });
+    else if (restoreFocus) toggle.focus();
     onScroll();
   };
   toggle.addEventListener('click', () => setMenu(!menuOpen));
   $$('a', links).forEach((a) => a.addEventListener('click', () => { if (menuOpen) setMenu(false); }));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) { setMenu(false); toggle.focus(); } });
+  document.addEventListener('keydown', (e) => {
+    if (!menuOpen) return;
+    if (e.key === 'Escape') setMenu(false, { restoreFocus: true });
+    else if (e.key === 'Tab') {
+      // keep focus inside the header (menu links + toggle) while the menu is open
+      const f = [...$$('a, button', nav)].filter((el) => el.offsetParent !== null);
+      const first = f[0]; const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
   window.matchMedia('(min-width: 960px)').addEventListener('change', (m) => { if (m.matches && menuOpen) setMenu(false); });
 
-  /* ---------- Active section in nav ---------- */
+  /* ---------- Current section in the nav (aria-current + a drawn bar) ---------- */
   const navLinks = $$('.nav__links a:not(.btn)');
   if ('IntersectionObserver' in window) {
     const spy = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (!en.isIntersecting) return;
-        navLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === '#' + en.target.id));
+        navLinks.forEach((a) => {
+          if (a.getAttribute('href') === '#' + en.target.id) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     ['home', 'about', 'services', 'work', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
   }
 
-  /* ---------- Scroll reveals ---------- */
-  const revealEls = $$('.reveal, .wipe');
-  // stagger siblings inside groups so they arrive as a sequence
-  $$('.menu, .why__list, .steps, .gallery, .faq__list, .pillars').forEach((group) => {
-    $$('.reveal, .wipe', group).forEach((el, i) => { el.style.transitionDelay = `${Math.min(i * 0.05, 0.35)}s`; });
-  });
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('is-visible');
-        io.unobserve(en.target);
-        // after the entrance, drop the delay so hovers respond instantly
-        setTimeout(() => { en.target.style.transitionDelay = ''; }, 1800);
+  /* ---------- Moment 1: the About statement lights up word by word (scrubbed, runs back on the way up) ---------- */
+  const statement = $('[data-moment="word-highlight"]');
+  if (statement && !reduceMotion) {
+    const wrapWords = (node) => {
+      [...node.childNodes].forEach((child) => {
+        if (child.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.appendChild(s);
+          });
+          child.replaceWith(frag);
+        } else if (child.nodeType === 1) wrapWords(child);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-    revealEls.forEach((el) => io.observe(el));
-    const steps = $('#steps');
-    if (steps) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { steps.classList.add('is-visible'); o.disconnect(); } }, { threshold: 0.35 }).observe(steps);
-  } else {
-    revealEls.forEach((el) => el.classList.add('is-visible'));
-    const steps = $('#steps'); if (steps) steps.classList.add('is-visible');
+    };
+    wrapWords(statement);
+    const words = $$('.w', statement);
+    statement.classList.add('is-armed');
+    let lit = -1;
+    const scrub = () => {
+      const r = statement.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.85; const end = vh * 0.45;
+      const t = Math.min(1, Math.max(0, (start - r.top) / Math.max(1, (start - end) + r.height)));
+      const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      const k = atEnd ? words.length : Math.round(t * words.length);
+      if (k === lit) return;
+      lit = k;
+      words.forEach((w, i) => w.classList.toggle('is-on', i < k));
+    };
+    let raf = 0;
+    const onScrub = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; scrub(); }); };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { window.addEventListener('scroll', onScrub, { passive: true }); scrub(); }
+        else { window.removeEventListener('scroll', onScrub); scrub(); }
+      }, { rootMargin: '20% 0px' }).observe(statement);
+    } else { words.forEach((w) => w.classList.add('is-on')); }
   }
 
-  /* ---------- FAQ: animated accordion ---------- */
-  $$('.qa').forEach((qa) => {
-    const summary = $('summary', qa);
+  /* ---------- Moment 2: the Process section holds still while its three steps take turns ---------- */
+  const chapters = $('#steps');
+  if (chapters) {
+    const stepEls = $$('.step', chapters);
+    const shots = $$('.chapters__frame img', chapters);
+    const stepsList = $('.steps', chapters);
+    const rail = document.createElement('span');
+    rail.className = 'steps__rail'; rail.setAttribute('aria-hidden', 'true');
+    const fill = document.createElement('span');
+    fill.className = 'steps__fill'; rail.appendChild(fill);
+    const wide = window.matchMedia('(min-width: 960px)');
+    let active = 0;
+    const setActive = (n) => {
+      if (n === active) return;
+      shots.forEach((img, i) => { img.classList.toggle('was-active', i === active); img.classList.toggle('is-active', i === n); });
+      stepEls.forEach((s, i) => s.classList.toggle('is-active', i === n));
+      active = n;
+      setTimeout(() => shots.forEach((img, i) => { if (i !== active) img.classList.remove('was-active'); }), 520);
+    };
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = chapters.getBoundingClientRect();
+      const span = Math.max(1, r.height - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -r.top / span));
+      fill.style.transform = `scaleY(${p.toFixed(4)})`;
+      setActive(Math.min(stepEls.length - 1, Math.floor(p * stepEls.length * 0.999)));
+    };
+    const onScrollPin = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const arm = () => {
+      const on = wide.matches && !reduceMotion;
+      chapters.classList.toggle('is-pinned', on);
+      if (on) {
+        if (!rail.isConnected) stepsList.prepend(rail);
+        window.addEventListener('scroll', onScrollPin, { passive: true });
+        update();
+      } else {
+        rail.remove();
+        window.removeEventListener('scroll', onScrollPin);
+        stepEls.forEach((s, i) => s.classList.toggle('is-active', i === 0));
+        shots.forEach((img, i) => { img.classList.toggle('is-active', i === 0); img.classList.remove('was-active'); });
+        active = 0;
+      }
+    };
+    wide.addEventListener('change', arm);
+    arm();
+  }
+
+  /* ---------- Services: the photo frame follows the package you point at or focus ---------- */
+  const frameShots = $$('#config-frame img');
+  const pkgs = $$('.config__menu .pkg');
+  const showShot = (pkg) => {
+    pkgs.forEach((p) => p.classList.toggle('is-active', p === pkg));
+    frameShots.forEach((img) => img.classList.toggle('is-active', img.dataset.shot === pkg.dataset.shot));
+  };
+  if (frameShots.length) {
+    pkgs.forEach((pkg) => {
+      pkg.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') showShot(pkg); });
+      pkg.addEventListener('focusin', () => showShot(pkg));
+    });
+  }
+
+  /* ---------- FAQ: the open answer is in the address, so it can be shared and survives a refresh ---------- */
+  const qas = $$('.qa');
+  qas.forEach((qa) => {
     const body = $('.qa__body', qa);
     qa.addEventListener('toggle', () => {
-      if (!qa.open || reduceMotion) return;
-      body.classList.remove('is-entering'); void body.offsetWidth; body.classList.add('is-entering');
+      if (qa.open) {
+        if (!reduceMotion) { body.classList.remove('is-entering'); void body.offsetWidth; body.classList.add('is-entering'); }
+        if (qa.id && history.replaceState) history.replaceState(null, '', '#' + qa.id);
+      } else if (qa.id && location.hash === '#' + qa.id && history.replaceState) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
     });
   });
+  const openFromHash = () => {
+    const target = location.hash && document.getElementById(location.hash.slice(1));
+    if (target && target.classList.contains('qa')) { target.open = true; target.scrollIntoView({ block: 'start' }); }
+  };
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
 
   /* ---------- Gallery lightbox ---------- */
   const tiles = $$('#gallery .tile');
@@ -180,7 +270,7 @@
   const closeLightbox = () => {
     lb.classList.remove('is-open');
     document.body.style.overflow = '';
-    setTimeout(() => { lb.hidden = true; lbImg.classList.remove('is-ready'); }, reduceMotion ? 0 : 380);
+    setTimeout(() => { lb.hidden = true; lbImg.classList.remove('is-ready'); }, reduceMotion ? 0 : 200);
     if (lastFocus) lastFocus.focus();
   };
   tiles.forEach((t, i) => $('.tile__btn', t).addEventListener('click', () => openLightbox(i)));
@@ -208,6 +298,29 @@
     touchX = null;
   });
 
+  /* ---------- Copy the email address ---------- */
+  $$('[data-copy]').forEach((btn) => {
+    const label = $('.copy__label', btn);
+    const status = document.getElementById(btn.getAttribute('aria-describedby'));
+    let timer = 0;
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.copy;
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        ta.remove();
+      }
+      clearTimeout(timer);
+      btn.classList.toggle('is-copied', ok);
+      label.textContent = ok ? 'Copied' : 'Press Ctrl+C to copy';
+      if (status) status.textContent = ok ? 'Email address copied' : '';
+      timer = setTimeout(() => { btn.classList.remove('is-copied'); label.textContent = 'Copy email'; if (status) status.textContent = ''; }, 2000);
+    });
+  });
+
   /* ---------- Social links (from content.js) ---------- */
   const social = window.LD_SOCIAL || {};
   const socialWrap = $('#footer-social');
@@ -216,9 +329,9 @@
     const url = (social[key] || '').trim();
     if (!/^https:\/\//.test(url)) return;
     const a = document.createElement('a');
-    a.className = 'social'; a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    a.className = 'social'; a.href = url;
     a.setAttribute('aria-label', `Legendary Detailing on ${label}`);
-    a.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${key}"/></svg>`;
+    a.innerHTML = `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${key}"/></svg>`;
     socialWrap.appendChild(a);
     socialWrap.hidden = false;
   });
@@ -233,7 +346,7 @@
     hours.forEach((h) => {
       const li = document.createElement('li');
       const day = document.createElement('span'); day.textContent = h.label || h.days.join(', ');
-      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} \u2013 ${fmtTime(h.closes)}`;
+      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} – ${fmtTime(h.closes)}`;
       li.append(day, time); list.appendChild(li);
     });
     $('#footer-hours').hidden = false;
@@ -276,7 +389,9 @@
     reviewsSection.hidden = false;
     if (/^https:\/\//.test(social.google || '')) {
       const more = $('#reviews-more');
-      more.innerHTML = `<a href="${social.google}" target="_blank" rel="noopener">Read all reviews on Google</a>`;
+      const a = document.createElement('a');
+      a.href = social.google; a.textContent = 'Read all reviews on Google';
+      more.appendChild(a);
       more.hidden = false;
     }
   } else if (editorMode) {
@@ -288,8 +403,8 @@
     reviewsSection.hidden = false;
   }
 
-  /* ---------- Image placeholders: shimmer until each photo has loaded ---------- */
-  $$('.wipe').forEach((w) => {
+  /* ---------- Image placeholders: a soft shimmer in each photo's own colour until it has loaded ---------- */
+  $$('.frame, .tile__btn').forEach((w) => {
     const img = $('img', w);
     if (!img || (img.complete && img.naturalWidth)) return;
     w.classList.add('is-loading');
@@ -297,37 +412,6 @@
     img.addEventListener('load', done, { once: true });
     img.addEventListener('error', done, { once: true });
   });
-
-  /* ---------- Pointer effects: card spotlight and gallery tilt (mouse/trackpad only) ---------- */
-  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    $$('.spot').forEach((card) => {
-      const light = document.createElement('span');
-      light.className = 'spot__light';
-      light.setAttribute('aria-hidden', 'true');
-      card.prepend(light);
-      let raf = 0;
-      card.addEventListener('pointermove', (e) => {
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          const r = card.getBoundingClientRect();
-          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-          card.style.setProperty('--my', `${e.clientY - r.top}px`);
-          raf = 0;
-        });
-      });
-    });
-    $$('#gallery .tile').forEach((tile) => {
-      const btn = $('.tile__btn', tile);
-      tile.addEventListener('pointermove', (e) => {
-        const r = tile.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        btn.style.setProperty('--ry', `${(px * 6).toFixed(2)}deg`);
-        btn.style.setProperty('--rx', `${(-py * 6).toFixed(2)}deg`);
-      });
-      tile.addEventListener('pointerleave', () => { btn.style.setProperty('--rx', '0deg'); btn.style.setProperty('--ry', '0deg'); });
-    });
-  }
 
   /* ---------- Booking form ---------- */
   const form = $('#booking-form');
@@ -340,6 +424,7 @@
   const submitBtn = $('#form-submit');
   const estimateValue = $('#estimate-value');
   const estimateNote = $('#estimate-note');
+  const estimateLines = $('#estimate-lines');
   const estimateInput = $('#f-estimate');
   const summaryBox = $('#form-summary');
   const statusEl = $('#form-status');
@@ -368,16 +453,21 @@
       const price = $('.choice__price', a.closest('.choice'));
       price.textContent = inc ? 'Included' : (a.value === 'Handwash' ? '+$25' : `$${a.dataset.price}`);
     });
-    if (!pkg) return { text: 'Choose a package', amount: null, note: 'Your final price is confirmed before your appointment.' };
-    if (!pkg.dataset.price) return { text: 'Custom quote', amount: null, note: 'We\'ll put together a personalized quote for your vehicle.' };
+    const lines = [];
+    if (!pkg) return { text: 'Choose a package', amount: null, lines, note: 'Your final price is confirmed before your appointment.' };
+    if (!pkg.dataset.price) return { text: 'Custom quote', amount: null, lines, note: 'We\'ll put together a personalized quote for your vehicle.' };
     let total = Number(pkg.dataset.price);
+    lines.push([pkg.value, `$${pkg.dataset.price}`]);
     const isSuv = vehicle && vehicle.value === 'SUV / Truck';
     const suvFee = Number(pkg.dataset.suv || 0);
-    if (isSuv) total += suvFee;
-    addonInputs.forEach((a) => { if (a.checked && !a.disabled) total += Number(a.dataset.price); });
+    if (isSuv && suvFee) { total += suvFee; lines.push(['SUV / truck', `+$${suvFee}`]); }
+    addonInputs.forEach((a) => {
+      if (a.checked && !a.disabled) { total += Number(a.dataset.price); lines.push([$('.choice__name', a.closest('.choice')).textContent, `+$${a.dataset.price}`]); }
+    });
+    included.forEach((name) => lines.push([name.replace('UV Protection', 'UV protection').replace('Rain Repellent', 'Rain repellent'), 'Included']));
     let note = 'Based on posted starting prices. Your final price is confirmed before your appointment.';
     if (isSuv && !suvFee) note = 'SUV and truck pricing for this package is confirmed when we reach out.';
-    return { text: `$${total}`, amount: total, note };
+    return { text: `$${total}`, amount: total, lines, note };
   };
 
   const describe = () => {
@@ -393,6 +483,7 @@
   };
 
   let lastEstimate = '';
+  let lastLines = '';
   const updateEstimate = () => {
     syncChoiceClasses();
     const est = calcEstimate();
@@ -400,6 +491,23 @@
     estimateValue.classList.toggle('is-muted', est.amount === null);
     estimateNote.textContent = est.note;
     estimateInput.value = est.amount !== null ? `${est.text} (estimate)` : est.text;
+    // work-order lines: only redraw when they change, new lines settle in one after another
+    const key = JSON.stringify(est.lines);
+    if (key !== lastLines) {
+      const before = new Set(JSON.parse(lastLines || '[]').map((l) => l[0]));
+      estimateLines.textContent = '';
+      let n = 0;
+      est.lines.forEach(([name, price]) => {
+        const li = document.createElement('li');
+        const a = document.createElement('span'); a.textContent = name;
+        const b = document.createElement('span'); b.textContent = price;
+        li.append(a, b);
+        if (before.has(name) || reduceMotion) li.style.animation = 'none';
+        else li.style.setProperty('--i', String(n++));
+        estimateLines.appendChild(li);
+      });
+      lastLines = key;
+    }
     if (est.text !== lastEstimate && lastEstimate && !reduceMotion) {
       estimateValue.classList.remove('is-bump'); void estimateValue.offsetWidth; estimateValue.classList.add('is-bump');
     }
@@ -425,8 +533,8 @@
     steps.forEach((s) => {
       const active = Number(s.dataset.step) === n;
       s.classList.toggle('is-active', active);
-      s.classList.remove('is-entering', 'from-left');
-      if (active && !reduceMotion) { void s.offsetWidth; s.classList.add('is-entering'); if (back) s.classList.add('from-left'); }
+      s.classList.remove('step-enter', 'from-left');
+      if (active && !reduceMotion) { void s.offsetWidth; s.classList.add('step-enter'); if (back) s.classList.add('from-left'); }
     });
     dots.forEach((d) => {
       const k = Number(d.dataset.stepDot);
@@ -439,7 +547,7 @@
     if (top < 0 || top > window.innerHeight * 0.4) card.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     if (focus) {
       const target = n === 1 ? $('input[name="Package"]:checked', form) || pkgInputs[0] : $('#f-name');
-      setTimeout(() => target.focus({ preventScroll: true }), reduceMotion ? 0 : 350);
+      setTimeout(() => target.focus({ preventScroll: true }), reduceMotion ? 0 : 300);
     }
   };
 
@@ -535,6 +643,7 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn.disabled) return;
     errorBox.hidden = true;
     if (!validateStep(1, false)) { goTo(1); validateStep(1); return; }
     if (!validateStep(2)) return;
@@ -547,11 +656,13 @@
     }
     data['Add-ons'] = fd.getAll('Add-ons').join(', ') || 'None';
     if (data.email) data._replyto = data.email;
+    submitBtn.style.minWidth = `${submitBtn.offsetWidth}px`; // the button keeps its width while sending
     submitBtn.classList.add('is-loading');
     submitBtn.setAttribute('aria-busy', 'true');
     submitBtn.disabled = true;
-    statusEl.textContent = 'Sending your request\u2026';
-    const slowTimer = setTimeout(() => { statusEl.textContent = 'Still sending, one moment\u2026'; }, 4000);
+    $('.btn__label', submitBtn).textContent = 'Sending…';
+    statusEl.textContent = 'Sending your request…';
+    const slowTimer = setTimeout(() => { statusEl.textContent = 'Still sending, one moment…'; }, 4000);
     try {
       const res = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
         method: 'POST',
@@ -569,7 +680,7 @@
       success.focus({ preventScroll: true });
     } catch (err) {
       track('Booking request failed', { reason: String(err.message || '').slice(0, 60) });
-      errorBox.innerHTML = `Your request didn\u2019t go through, and everything you entered is still here. Try again, call or text <a href="${BUSINESS.tel}">${BUSINESS.phone}</a>, or <a href="${mailtoFallback(data)}">email your request</a> instead.<br><button type="button" class="btn btn--outline btn--sm form__retry">Try again</button>`;
+      errorBox.innerHTML = `Your request didn’t go through, and everything you entered is still here. Try again, call or text <a href="${BUSINESS.tel}">${BUSINESS.phone}</a>, or <a href="${mailtoFallback(data)}">email your request</a> instead.<br><button type="button" class="btn btn--secondary form__retry">Try sending again</button>`;
       errorBox.hidden = false;
       $('.form__retry', errorBox).addEventListener('click', () => (form.requestSubmit ? form.requestSubmit() : submitBtn.click()));
     } finally {
@@ -578,6 +689,8 @@
       submitBtn.classList.remove('is-loading');
       submitBtn.removeAttribute('aria-busy');
       submitBtn.disabled = false;
+      submitBtn.style.minWidth = '';
+      $('.btn__label', submitBtn).textContent = 'Request My Detail';
     }
   });
 })();
