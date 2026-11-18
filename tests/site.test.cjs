@@ -527,6 +527,15 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await ctx.close();
   });
 
+  await test('faq: FAQPage structured data matches the visible questions and answers word for word', async () => {
+    const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } });
+    const visible = await page.$$eval('.qa', (ds) => ds.map((d) => ({ q: d.querySelector('summary').textContent.trim(), a: [...d.querySelectorAll('.qa__body p')].map((p) => p.textContent.trim()).join(' ').replace(/\s+/g, ' ') })));
+    const faq = JSON.parse(await page.$eval('#ld-json', (s) => s.textContent))['@graph'].find((n) => n['@type'] === 'FAQPage');
+    assert(faq, 'FAQPage present in structured data');
+    eq(JSON.stringify(faq.mainEntity.map((x) => ({ q: x.name, a: x.acceptedAnswer.text }))), JSON.stringify(visible), 'structured FAQ = visible FAQ');
+    await ctx.close();
+  });
+
   /* 8. Reviews and social come from content.js */
   await test('content.js: real reviews and social links render; editor preview works', async () => {
     const { ctx, page } = await openPage(browser, base, { viewport: { width: 1440, height: 900 } }, '?editor');

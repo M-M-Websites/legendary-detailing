@@ -8,7 +8,7 @@ Premium, fully responsive website for **Legendary Detailing**, a mobile auto det
   - Lighthouse scores 100 for Accessibility, Best Practices and SEO.
   - Performance is 99 on desktop and 91+ on mobile with simulated slow 4G.
   - axe-core finds no accessibility violations.
-  - A 27-test regression suite is included (see *Testing*).
+  - A 28-test regression suite is included (see *Testing*).
 
 ---
 
@@ -147,7 +147,7 @@ The suite covers:
 - **Layout:** six screen sizes from 320px to 1920px, with no sideways scrolling and no broken images or console errors.
 - **Content:** every phone, text and email link, prices, structured data, and navigation.
 - **Booking form:** the price estimate, two-step validation, payload contents, and both success and failure paths. FormSubmit is mocked, so tests never send real email.
-- **Interactive parts:** the gallery viewer, the mobile menu and quick bar, the FAQ, and `content.js` reviews and socials.
+- **Interactive parts:** the gallery viewer, the mobile menu and quick bar, the FAQ (including a check that its FAQPage structured data matches the visible text), and `content.js` reviews and socials.
 - **SEO:** one H1, the required H2s with no skipped levels, 80–150-word service guides, alt text, calls to action, robots/canonical/Open Graph, and structured data (`validate_structured_data.py` checks it against the schema.org vocabulary).
 - **Analytics:** phone, text, email and book clicks, plus booking results, raise tracking events.
 - **Accessibility:** axe-core checks plus keyboard use.

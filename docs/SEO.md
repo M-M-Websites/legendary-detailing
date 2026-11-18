@@ -57,7 +57,8 @@ All four use only the package inclusions on the business's flyer. There are no i
 - **Delivery:** responsive WebP sizes (480, 720, 828, 1200 and full) through `srcset`/`sizes`. Below-the-fold images lazy-load, `width`/`height` are set so nothing shifts while loading (CLS = 0), and the hero image is preloaded.
 
 ### Structured data (JSON-LD)
-- **Types:** a `@graph` holding a `WebSite` and an `AutomotiveBusiness`.
+- **Types:** a `@graph` holding a `WebSite`, an `AutomotiveBusiness` and a `FAQPage`.
+- **FAQ:** the `FAQPage` repeats the visible *Questions, answered.* section word for word (plain text, links dropped). If you edit a question or answer in `index.html`, edit the matching JSON-LD entry too; a test fails if they differ.
 - **Business details:** name, phone `+1-901-483-8862`, email, URL, logo, image, slogan, and a `ContactPoint`.
 - **Location:** Memphis/TN `address` with no street, and `areaServed` Memphis.
 - **Prices:** `priceRange`, plus an `OfferCatalog` of the five services with their flyer prices.
