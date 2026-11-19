@@ -3,4 +3,4 @@ Allow: /
 Disallow: /tests/
 Disallow: /scripts/
 Disallow: /docs/
-Sitemap: https://michaelabatetsu.github.io/legendary-detailing/sitemap.xml
+Sitemap: https://legendarydetailingmemphis.com/sitemap.xml
