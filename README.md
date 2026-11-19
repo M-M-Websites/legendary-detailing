@@ -16,6 +16,10 @@ Premium, fully responsive website for **Legendary Detailing**, a mobile auto det
 
 The full SEO guide is in **[docs/SEO.md](docs/SEO.md)**. It covers what's optimized, how to set up Google Search Console, Google Business Profile and analytics, what the owner still needs to confirm, and the final audit. A monthly reporting template is in [docs/seo-monthly-report.md](docs/seo-monthly-report.md).
 
+## One-command launch
+
+On your own computer, from this folder: `bash scripts/launch.sh yourdomain.com`. It points the site at the domain, runs the tests, pushes, signs in to Cloudflare in your browser, deploys with the domain and `www.`, checks the live site (headers, redirects, 404, robots, sitemap, llms.txt, private files) and notifies IndexNow, then prints a pass/fail report and the few Google and Bing clicks left. Set `CLOUDFLARE_API_TOKEN` first if you also want it to set SSL, AI crawler access and Crawler Hints for you; otherwise it lists those dashboard steps. The domain must already be in the Cloudflare account.
+
 ## Launch checklist (about 15 minutes)
 
 1. **Host it.** Pick one:
