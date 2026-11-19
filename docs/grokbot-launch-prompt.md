@@ -28,7 +28,8 @@ Your job: launch the Legendary Detailing website on its domain, set up Cloudflar
 6. **Spending money needs Michael's OK.** Ask before buying a domain or anything else.
 7. **Don't contact the client.** Don't submit the site's booking form, since that emails the owner. Anything for the owner goes in a draft for Michael.
 8. **Never type, copy or show passwords, codes or keys** in the terminal, in files or in your report.
-9. **Report honestly.** A step that didn't work is reported as failed, with the exact message.
+9. **Google account: always `mnmwebsitesforyou@gmail.com`.** Every Google and Bing step (Search Console, Rich Results Test, the Bing import) uses only this account. Before each of those steps, click the round profile picture at the top right of the Google page and read the email address. If it isn't `mnmwebsitesforyou@gmail.com`, switch to it with **Switch account** (or **Add another account**, and ask Michael to sign in). Never add a property, verify or request indexing under any other Google account.
+10. **Report honestly.** A step that didn't work is reported as failed, with the exact message.
 
 ## The job
 
@@ -98,7 +99,7 @@ On dash.cloudflare.com, click **legendarydetailingmemphis.com**, then:
 
 ## Step 5: Google Search Console (browser)
 
-1. Open **search.google.com/search-console**. Check you're signed in as M&M's Google account (`mnmwebsitesforyou@gmail.com`); if not, ask Michael to sign in.
+1. Open **search.google.com/search-console**. Click the round profile picture at the top right and **confirm the email shown is exactly `mnmwebsitesforyou@gmail.com`**. If it's any other account, click **Switch account** and choose `mnmwebsitesforyou@gmail.com`. If it isn't listed, choose **Add another account** and ask Michael to sign in. Don't continue until the profile shows `mnmwebsitesforyou@gmail.com`.
 2. **Add the property:** click the property menu at the top left → **Add property**. Choose the left box, **Domain**, type `legendarydetailingmemphis.com` and click **Continue**.
 3. **Verify:**
    - If Google offers **Verify with Cloudflare** (or "Start verification" with Cloudflare), click it, approve in the Cloudflare tab that opens, and come back.
@@ -119,7 +120,7 @@ On dash.cloudflare.com, click **legendarydetailingmemphis.com**, then:
 
 ## Step 7: Bing (this is what ChatGPT search uses)
 
-1. Open **bing.com/webmasters** and sign in with the same Google account if asked.
+1. Open **bing.com/webmasters**. Sign in with **Google** using `mnmwebsitesforyou@gmail.com`. When Google asks you to choose an account, pick exactly that one. If Bing is already signed in with a different account, sign out first (profile at the top right → **Sign out**), then sign in again with `mnmwebsitesforyou@gmail.com`.
 2. Choose **Import from Google Search Console**, allow access, tick `legendarydetailingmemphis.com` and click **Import**.
 3. **Confirm:** `legendarydetailingmemphis.com` appears in the Bing site list. Open it, click **Sitemaps**, and confirm `https://legendarydetailingmemphis.com/sitemap.xml` is listed. If not, click **Submit sitemap** and add it.
 4. Open **URL Submission** (or **URL Inspection → Request indexing**) for `https://legendarydetailingmemphis.com/` and submit it once.
@@ -142,8 +143,8 @@ Domain in Cloudflare: Active (bought <date>, $<price>/yr, auto-renew on) / alrea
 Launch script: tests <n>/<n> · deployed · live checks <n> PASS, <n> FAIL
 
 Cloudflare: SSL Full (strict) · Always HTTPS on · AI crawlers allowed · managed robots.txt off · Crawler Hints on · Web Analytics on
-Google: verified · sitemap <Success / Couldn't fetch / Pending> (<n> pages) · indexing <requested / already indexed / error: "...">
-Bing: imported · sitemap listed · URL submitted
+Google (mnmwebsitesforyou@gmail.com): verified · sitemap <Success / Couldn't fetch / Pending> (<n> pages) · indexing <requested / already indexed / error: "...">
+Bing (mnmwebsitesforyou@gmail.com): imported · sitemap listed · URL submitted
 Rich Results Test: <result>
 GitHub Pages preview: unpublished
 
