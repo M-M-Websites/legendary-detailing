@@ -63,6 +63,7 @@ All four use only the package inclusions on the business's flyer. There are no i
 - **Location:** Memphis/TN `address` with no street, and `areaServed` Memphis.
 - **Prices:** `priceRange`, plus an `OfferCatalog` of the five services with their flyer prices.
 - **Added automatically once filled in `assets/js/content.js`:** `sameAs` (Google Business Profile and social links) and `openingHoursSpecification` (hours).
+  The confirmed Instagram and 24/7 hours are also written into `index.html` (structured data and the footer hours list) so AI and search crawlers that don't run JavaScript see them. When `content.js` changes, update that copy too; the test suite flags any mismatch.
 - **Never included:** ratings, reviews or a street address.
 - **Validated** offline against the official schema.org vocabulary (`tests/validate_structured_data.py`): every type and property is valid.
 

@@ -59,6 +59,8 @@
         "priceRange": "$20 - $140",
         "currenciesAccepted": "USD",
         "contactPoint": { "@type": "ContactPoint", "telephone": "+1-901-483-8862", "email": "xavierwade38@gmail.com", "contactType": "customer service", "areaServed": "US-TN", "availableLanguage": "English" },
+        "sameAs": ["https://www.instagram.com/cme.zay/"],
+        "openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "00:00", "closes": "23:59" }],
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
           "name": "Auto detailing services",
@@ -720,10 +722,11 @@
           <li><a href="sms:+19014838862" data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chat"/></svg>Text (901) 483-8862</a></li>
           <li><a href="mailto:xavierwade38@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>xavierwade38@gmail.com</a></li>
         </ul>
-        <!-- Business hours appear here once added in assets/js/content.js -->
-        <div class="footer__hours" id="footer-hours" hidden>
+        <!-- Business hours come from assets/js/content.js. The list below is a copy for
+             crawlers that don't run JavaScript; main.js rebuilds it from content.js. -->
+        <div class="footer__hours" id="footer-hours">
           <h3>Hours</h3>
-          <ul id="hours-list"></ul>
+          <ul id="hours-list"><li><span>Every day</span><span>Open 24 hours</span></li></ul>
         </div>
       </div>
       <div class="footer__col">

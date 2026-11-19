@@ -18,6 +18,9 @@ window.LD_SOCIAL = {
    Leave empty until the owner confirms real hours. Once filled in, the hours
    show in the footer and are added to the Google structured data automatically.
    Days must be written in full English (Monday, Tuesday, ...). Times are 24-hour.
+   Maintainers: index.html keeps a static copy of the hours and social links (footer
+   hours list + structured data) for AI and search crawlers that don't run JavaScript.
+   Update it to match; the test suite fails if the two drift apart.
 
    Example:
    { label: "Mon - Fri", days: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "18:00" },

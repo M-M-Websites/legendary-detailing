@@ -160,6 +160,14 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     eq(ld.openingHoursSpecification[0].dayOfWeek.length, 7, 'every day');
     eq(ld.openingHoursSpecification[0].opens + '-' + ld.openingHoursSpecification[0].closes, '00:00-23:59', 'open 24 hours');
     eq((await page.textContent('#hours-list li')).replace(/\s+/g, ' ').trim(), 'Every dayOpen 24 hours', 'footer hours text');
+    // crawlers that don't run JavaScript get the same hours and profiles from the static HTML
+    const raw = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const rawBiz = JSON.parse(raw.match(/<script type="application\/ld\+json" id="ld-json">([\s\S]*?)<\/script>/)[1])['@graph'].find((n) => n['@type'] === 'AutomotiveBusiness');
+    eq(JSON.stringify(rawBiz.sameAs), JSON.stringify(ld.sameAs), 'static sameAs matches content.js');
+    eq(JSON.stringify(rawBiz.openingHoursSpecification), JSON.stringify(ld.openingHoursSpecification), 'static hours schema matches content.js');
+    const rawHours = raw.match(/<ul id="hours-list">([\s\S]*?)<\/ul>/)[1].replace(/<[^>]+>/g, '').trim();
+    eq(rawHours, (await page.textContent('#hours-list')).trim(), 'static footer hours match content.js');
+    assert(!/id="footer-hours"[^>]*hidden/.test(raw), 'footer hours visible without JavaScript');
     assert(!('aggregateRating' in ld), 'schema must not claim ratings');
     eq(ld.address.addressLocality, 'Memphis', 'schema city');
     eq(ld.address.addressRegion, 'TN', 'schema state');
@@ -258,6 +266,10 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     await page.route('https://formsubmit.co/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"success":"true"}' }));
     await page.goto(base + '/', { waitUntil: 'networkidle' });
     eq(await page.locator('script[src="https://plausible.io/js/script.js"][data-domain="example.com"]').count(), 1, 'plausible loaded with domain');
+    // emptied content.js removes the static hours/profile copies too
+    assert(await page.locator('#footer-hours').isHidden(), 'hours hidden when content.js has none');
+    const emptyBiz = JSON.parse(await page.$eval('#ld-json', (s) => s.textContent))['@graph'].find((n) => n['@type'] === 'AutomotiveBusiness');
+    assert(!('sameAs' in emptyBiz) && !('openingHoursSpecification' in emptyBiz), 'no sameAs/hours in schema when content.js has none');
     await page.locator('.hero__links a[href^="tel:"]').click();
     await page.locator('.hero__links a[href^="sms:"]').click();
     await page.locator('#contact a[href^="mailto:"]').first().click();

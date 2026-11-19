@@ -228,6 +228,9 @@
   const hours = (Array.isArray(window.LD_HOURS) ? window.LD_HOURS : []).filter((h) => h && Array.isArray(h.days) && h.days.length
     && h.days.every((d) => DAY_ORDER.includes(d)) && /^\d{2}:\d{2}$/.test(h.opens || '') && /^\d{2}:\d{2}$/.test(h.closes || ''));
   const fmtTime = (t) => { const [hh, mm] = t.split(':').map(Number); const ap = hh >= 12 ? 'PM' : 'AM'; return `${((hh + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${ap}`; };
+  // index.html carries a static copy for crawlers; content.js is the source of truth
+  $('#hours-list').replaceChildren();
+  $('#footer-hours').hidden = !hours.length;
   if (hours.length) {
     const list = $('#hours-list');
     hours.forEach((h) => {
@@ -236,7 +239,6 @@
       const time = document.createElement('span'); time.textContent = (h.opens === '00:00' && h.closes === '23:59') ? 'Open 24 hours' : `${fmtTime(h.opens)} \u2013 ${fmtTime(h.closes)}`;
       li.append(day, time); list.appendChild(li);
     });
-    $('#footer-hours').hidden = false;
   }
 
   /* ---------- Structured data: add confirmed social profiles and hours from content.js ---------- */
@@ -246,9 +248,11 @@
       const ld = JSON.parse(ldScript.textContent);
       const biz = (ld['@graph'] || []).find((n) => n['@type'] === 'AutomotiveBusiness');
       const profiles = Object.keys(socialNames).map((k) => (social[k] || '').trim()).filter((u) => /^https:\/\//.test(u));
-      if (biz && (profiles.length || hours.length)) {
-        if (profiles.length) biz.sameAs = profiles;
+      if (biz) {
+        // index.html carries a static copy for crawlers; keep it in step with content.js
+        if (profiles.length) biz.sameAs = profiles; else delete biz.sameAs;
         if (hours.length) biz.openingHoursSpecification = hours.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes }));
+        else delete biz.openingHoursSpecification;
         ldScript.textContent = JSON.stringify(ld);
       }
     } catch (e) { /* leave the static structured data untouched */ }
