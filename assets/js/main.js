@@ -233,7 +233,7 @@
     hours.forEach((h) => {
       const li = document.createElement('li');
       const day = document.createElement('span'); day.textContent = h.label || h.days.join(', ');
-      const time = document.createElement('span'); time.textContent = `${fmtTime(h.opens)} \u2013 ${fmtTime(h.closes)}`;
+      const time = document.createElement('span'); time.textContent = (h.opens === '00:00' && h.closes === '23:59') ? 'Open 24 hours' : `${fmtTime(h.opens)} \u2013 ${fmtTime(h.closes)}`;
       li.append(day, time); list.appendChild(li);
     });
     $('#footer-hours').hidden = false;

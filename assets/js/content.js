@@ -8,7 +8,7 @@
    Paste full profile URLs between the quotes. Icons appear in the footer
    automatically; empty ones stay hidden. */
 window.LD_SOCIAL = {
-  instagram: "",
+  instagram: "https://www.instagram.com/cme.zay/",
   facebook: "",
   tiktok: "",
   google: ""   // Google Business Profile link, e.g. https://g.page/r/...  (also used for "Read all reviews")
@@ -24,7 +24,8 @@ window.LD_SOCIAL = {
    { label: "Saturday",  days: ["Saturday"], opens: "09:00", closes: "15:00" },
 */
 window.LD_HOURS = [
-
+  // Confirmed by the owner: available any time, every day. 00:00-23:59 is Google's format for open 24 hours.
+  { label: "Every day", days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], opens: "00:00", closes: "23:59" }
 ];
 
 /* PRIVACY-FRIENDLY ANALYTICS (optional, no cookies)
