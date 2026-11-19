@@ -111,6 +111,13 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
         const r = el.getBoundingClientRect(); return r.width > 0 && (r.right > window.innerWidth + 1 || r.left < -1);
       }).length);
       eq(offscreen, 0, 'controls outside the viewport');
+      // phones and tablets: tap-to-call and tap-to-text sit in the header, above the fold
+      if (opts.viewport.width < 960) {
+        for (const sel of ['.nav__phone[href^="tel:+19014838862"]', '.nav__text[href^="sms:+19014838862"]']) {
+          const box = await page.locator(sel).boundingBox();
+          assert(box && box.width >= 44 && box.height >= 44 && box.y >= 0 && box.y + box.height <= opts.viewport.height && box.x + box.width <= opts.viewport.width, `${sel} not a visible 44px target above the fold`);
+        }
+      }
       eq(problems.length, 0, `errors: ${problems.join('; ')}`);
       await ctx.close();
     });

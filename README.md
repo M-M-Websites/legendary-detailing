@@ -81,7 +81,7 @@ Prices match the business flyer. Each one appears in three places, so update all
 
 | Section | Notes |
 |---|---|
-| Sticky navigation | Home, Services, Our Work, About, Contact, plus a gold **Book Now** button. Includes a scroll progress bar, the active section highlighted, a tap-to-call icon and an animated full-screen menu on phones |
+| Sticky navigation | Home, Services, Our Work, About, Contact, plus a gold **Book Now** button. Includes a scroll progress bar, the active section highlighted, tap-to-call and tap-to-text icons and an animated full-screen menu on phones |
 | Hero | Real customer car photo. One signature moment: the headline rises in, then a gloss light sweeps across the letters and the paint, like a detailer's inspection light |
 | Tagline band | *Cleaner. Shinier. Legendary.* from the flyer, on a slow marquee that pauses on hover |
 | About | Mobile service, premium products, attention to detail and satisfaction guaranteed, all taken from the flyer |

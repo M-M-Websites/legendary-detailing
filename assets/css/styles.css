@@ -171,14 +171,16 @@ p { max-width: 68ch; }
 .nav__links a:not(.btn):hover, .nav__links a.is-active { color: var(--white); }
 .nav__links a:not(.btn):hover::after, .nav__links a.is-active::after { transform: scaleX(1); transform-origin: left; }
 .nav__cta { margin-left: 4px; }
-.nav__phone, .nav__toggle { display: none; }
+.nav__phone, .nav__text, .nav__toggle { display: none; }
 
 @media (max-width: 959px) {
   :root { --nav-h: 66px; }
   .nav { background: rgba(11, 11, 11, .9); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-color: var(--line); }
   .nav__brand img, .nav.is-scrolled .nav__brand img { height: 42px; transform: none; }
-  .nav__phone { display: grid; place-items: center; margin-left: auto; width: 44px; height: 44px; border: 1px solid rgba(212, 175, 55, .55); border-radius: 50%; color: var(--gold); }
-  .nav__phone svg { width: 19px; height: 19px; }
+  .nav__inner { gap: 12px; }
+  .nav__phone, .nav__text { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(212, 175, 55, .55); border-radius: 50%; color: var(--gold); }
+  .nav__phone { margin-left: auto; }
+  .nav__phone svg, .nav__text svg { width: 19px; height: 19px; }
   .nav__toggle { display: grid; gap: 7px; place-content: center; width: 44px; height: 44px; background: none; border: 0; cursor: pointer; padding: 0; }
   .nav__toggle span { display: block; width: 26px; height: 2px; background: var(--white); transition: transform .35s var(--ease); }
   .nav__toggle[aria-expanded="true"] span:first-child { transform: translateY(4.5px) rotate(45deg); }
