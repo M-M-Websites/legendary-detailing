@@ -176,6 +176,7 @@ p { max-width: 68ch; }
 @media (max-width: 959px) {
   :root { --nav-h: 66px; }
   .nav { background: rgba(11, 11, 11, .9); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-color: var(--line); }
+  .nav__brand { display: flex; align-items: center; min-height: 44px; }
   .nav__brand img, .nav.is-scrolled .nav__brand img { height: 42px; transform: none; }
   .nav__inner { gap: 12px; }
   .nav__phone, .nav__text { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(212, 175, 55, .55); border-radius: 50%; color: var(--gold); }
