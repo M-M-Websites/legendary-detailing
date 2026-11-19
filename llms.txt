@@ -1,0 +1,29 @@
+# Legendary Detailing
+
+> Legendary Detailing is a mobile auto detailing business in Memphis, Tennessee. They come to the customer and offer interior, exterior and complete car detailing, plus custom detailing quotes. Slogan: "Every Detail. Legendary Results."
+
+## Services and starting prices
+
+- Exterior Wash: from $20. Wash, wheel and tire cleaning, tire shine and streak-free windows.
+- Interior Detail: from $45.
+- Full Detail: from $80. The Exterior Wash and Interior Detail together, with tire shine and windows inside and out.
+- Full Detail Package: from $120. The Full Detail plus buffing, UV protectant and rain repellent.
+- SUVs and trucks: +$20 on the Full Detail and the Full Detail Package.
+- Add-ons: buffing $20, UV protection $15, rain repellent $15, handwash +$25.
+- Custom Detailing: a personalized quote for anything specific.
+
+These are starting prices. The final price is confirmed before the appointment, based on the vehicle's size and condition.
+
+## Service area
+
+Memphis, TN, including Downtown, Midtown, East Memphis, Cordova, Whitehaven, Raleigh, Hickory Hill and Frayser. Customers outside Memphis can send their ZIP code with a request to check whether Legendary Detailing can reach them.
+
+## How to book
+
+- Request an appointment online: https://michaelabatetsu.github.io/legendary-detailing/#book
+- Call or text: (901) 483-8862
+- Email: xavierwade38@gmail.com
+
+## Pages
+
+- [Home](https://michaelabatetsu.github.io/legendary-detailing/): services, prices, work, service area, FAQ and the booking form.

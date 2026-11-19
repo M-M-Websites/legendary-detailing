@@ -94,6 +94,11 @@ All four use only the package inclusions on the business's flyer. There are no i
 
 ---
 
+### AI search and fast indexing
+- **`llms.txt`** at the site root: a plain-text summary of the services, starting prices, service area and booking options for AI assistants (ChatGPT, Gemini, Claude, Perplexity). It uses only facts already on the page; update it whenever prices or the service area change. `scripts/set-domain.sh` rewrites its URLs.
+- **IndexNow key** (`c2d25c3e3eb276113cad85d385c0b119.txt` at the root) lets Bing, Yandex and other IndexNow engines be told about changed pages. With Cloudflare, turn on *Caching → Configuration → Crawler Hints* to submit changes automatically. Google ignores IndexNow; it uses the sitemap.
+- **Cloudflare settings for AI visibility:** *Security → Settings → Bot traffic*: AI crawler access set to *Allow* for Search and Agents, and the managed robots.txt option off, so Cloudflare doesn't add lines blocking AI crawlers.
+
 ## 2. Manual actions required
 
 | # | Task | Who / access needed |

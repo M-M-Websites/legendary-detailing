@@ -19,6 +19,7 @@ The full SEO guide is in **[docs/SEO.md](docs/SEO.md)**. It covers what's optimi
 ## Launch checklist (about 15 minutes)
 
 1. **Host it.** Pick one:
+   - **Cloudflare Workers (recommended, already configured):** `npx wrangler deploy` from this folder uses `wrangler.toml` + `worker.js`, serves the branded 404, redirects `www.` to the bare domain and applies `_headers`. Then attach the custom domain and its `www.` under the Worker's *Settings → Domains & Routes*.
    - **Netlify:** *Add new site → Import from Git →* pick this repo. Leave the build command empty and set the publish directory to `/`.
    - **Cloudflare Pages:** *Create → Pages → Connect to Git →* pick this repo. Framework preset: None. Build command: empty. Output directory: `/`.
 

@@ -1,0 +1,20 @@
+# Files that must not be published with the Worker static assets.
+.git
+.gitignore
+.assetsignore
+.nojekyll
+.DS_Store
+.mcp.json
+.claude
+node_modules
+tests
+scripts
+docs
+README.md
+CNAME
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+worker.js
+*.md
+*.log

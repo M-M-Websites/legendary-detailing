@@ -22,7 +22,7 @@ NEW="https://$DOMAIN"
 OLD="$(grep -o '<link rel="canonical" href="[^"]*"' index.html | sed -E 's/.*href="([^"]*)\/?"/\1/' | sed -E 's#/$##')"
 if [ -z "$OLD" ]; then echo "Could not find the current site URL in index.html" >&2; exit 1; fi
 
-for f in index.html sitemap.xml robots.txt; do
+for f in index.html sitemap.xml robots.txt $([ -f llms.txt ] && echo llms.txt); do
   OLD="$OLD" NEW="$NEW" perl -pi -e 's/\Q$ENV{OLD}\E/$ENV{NEW}/g' "$f"
 done
 # The 404 page uses root-relative paths; the custom domain serves the site from "/"
@@ -34,4 +34,4 @@ perl -pi -e "s#<lastmod>[^<]*</lastmod>#<lastmod>$TODAY</lastmod>#" sitemap.xml
 printf '%s\n' "$DOMAIN" > CNAME
 
 echo "Done. The site now points to $NEW"
-echo "Changed: index.html, sitemap.xml, robots.txt, 404.html, CNAME"
+echo "Changed: index.html, sitemap.xml, robots.txt, 404.html, CNAME$([ -f llms.txt ] && echo ", llms.txt")"

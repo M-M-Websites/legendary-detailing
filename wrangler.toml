@@ -1,0 +1,14 @@
+# Cloudflare Worker + Static Assets config for the Legendary Detailing site.
+# Deploy with `npx wrangler deploy`, then attach the custom domain and its www.
+name = "legendary-detailing"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[assets]
+directory = "./"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+# Needed so worker.js can redirect www.* before assets are served.
+run_worker_first = true
