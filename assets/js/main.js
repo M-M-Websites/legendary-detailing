@@ -212,6 +212,9 @@
   const social = window.LD_SOCIAL || {};
   const socialWrap = $('#footer-social');
   const socialNames = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', google: 'Google reviews' };
+  // index.html carries a static copy for crawlers; content.js is the source of truth
+  socialWrap.replaceChildren();
+  socialWrap.hidden = true;
   Object.entries(socialNames).forEach(([key, label]) => {
     const url = (social[key] || '').trim();
     if (!/^https:\/\//.test(url)) return;

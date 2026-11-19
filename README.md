@@ -49,7 +49,7 @@ Everything else on the site is complete. The owner-specific content below has a 
 This is the only file the owner needs to touch.
 - **Business hours (`LD_HOURS`):** once filled in, the hours appear in the footer and are added to Google's structured data automatically.
 - **Analytics (`LD_ANALYTICS`):** turns on cookieless Plausible or GoatCounter tracking for visits, phone, text and email clicks, and booking requests. See docs/SEO.md.
-- **Social links (`LD_SOCIAL`):** paste the full Instagram, Facebook, TikTok or Google Business Profile URLs. Their icons appear in the footer automatically.
+- **Social links (`LD_SOCIAL`):** paste the full Instagram, Facebook, TikTok or Google Business Profile URLs. Their icons appear in the footer automatically. `index.html` also carries a static copy of the footer links (and of the hours list and the JSON-LD `sameAs`/hours) for crawlers that don't run JavaScript; when you change `LD_SOCIAL` or `LD_HOURS`, update those copies too. The test suite fails until they match.
 - **Reviews:** add real customer reviews only, word for word. The *What our clients are saying* section stays hidden until at least one exists, so the site never shows an empty or fake review block. Fake reviews are illegal under the FTC rule that took effect October 2024.
 - To preview the review layout without publishing anything, open the site with `?editor` at the end of the address.
 

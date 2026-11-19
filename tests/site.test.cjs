@@ -27,7 +27,7 @@ async function test(name, fn) {
 }
 
 /* ---------- static server ---------- */
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
+const TYPES = { '.ico': 'image/x-icon', '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
@@ -168,6 +168,15 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     const rawHours = raw.match(/<ul id="hours-list">([\s\S]*?)<\/ul>/)[1].replace(/<[^>]+>/g, '').trim();
     eq(rawHours, (await page.textContent('#hours-list')).trim(), 'static footer hours match content.js');
     assert(!/id="footer-hours"[^>]*hidden/.test(raw), 'footer hours visible without JavaScript');
+    // ...and the same Instagram link, with exactly the markup main.js renders (no duplicate once JS runs)
+    assert(!/id="footer-social"[^>]*hidden/.test(raw), 'footer social links visible without JavaScript');
+    const socialSame = await page.evaluate((html) => {
+      const staticWrap = new DOMParser().parseFromString(html, 'text/html').getElementById('footer-social');
+      const liveWrap = document.getElementById('footer-social');
+      return { same: staticWrap.innerHTML === liveWrap.innerHTML, staticLinks: [...staticWrap.querySelectorAll('a')].map((a) => a.getAttribute('href')) };
+    }, raw);
+    eq(JSON.stringify(socialSame.staticLinks), JSON.stringify(ld.sameAs), 'static footer social links match content.js');
+    assert(socialSame.same, 'static footer social markup matches what main.js renders');
     assert(!('aggregateRating' in ld), 'schema must not claim ratings');
     eq(ld.address.addressLocality, 'Memphis', 'schema city');
     eq(ld.address.addressRegion, 'TN', 'schema state');
@@ -638,6 +647,59 @@ const estimate = (page) => page.locator('#estimate-value').textContent();
     eq(marquee, 'none', 'marquee stopped');
     eq(problems.length, 0, problems.join('; '));
     await ctx.close();
+  });
+
+  await test('static files: favicon.ico, Permissions-Policy and the Worker 404 status', async () => {
+    // Permissions-Policy: no obsolete interest-cohort (Chrome warns on every page load); keep the rest
+    const headersFile = fs.readFileSync(path.join(ROOT, '_headers'), 'utf8');
+    assert(!/interest-cohort/.test(headersFile), '_headers must not list interest-cohort');
+    const pp = (headersFile.match(/Permissions-Policy:\s*(.+)/) || [])[1] || '';
+    for (const f of ['camera=()', 'microphone=()', 'geolocation=()']) assert(pp.includes(f), `Permissions-Policy keeps ${f}: ${pp}`);
+
+    // favicon.ico: a real multi-size ICO at the site root, linked from both pages, not excluded from the deploy
+    const ico = fs.readFileSync(path.join(ROOT, 'favicon.ico'));
+    eq(ico.readUInt16LE(0), 0, 'ICO reserved field');
+    eq(ico.readUInt16LE(2), 1, 'ICO type (icon)');
+    const count = ico.readUInt16LE(4);
+    const sizes = [];
+    for (let i = 0; i < count; i++) {
+      const e = 6 + i * 16;
+      sizes.push(ico[e] || 256);
+      const len = ico.readUInt32LE(e + 8); const off = ico.readUInt32LE(e + 12);
+      assert(off + len <= ico.length, `ICO image ${i} lies inside the file`);
+    }
+    eq(JSON.stringify(sizes.sort((a, b) => a - b)), JSON.stringify([16, 32, 48]), 'ICO sizes');
+    assert(/<link rel="icon" href="favicon\.ico"/.test(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')), 'index.html links favicon.ico');
+    assert(/<link rel="icon" href="\/favicon\.ico"/.test(fs.readFileSync(path.join(ROOT, '404.html'), 'utf8')), '404.html links /favicon.ico');
+    const ignore = fs.readFileSync(path.join(ROOT, '.assetsignore'), 'utf8').split('\n').map((l) => l.trim());
+    assert(!ignore.some((l) => l === 'favicon.ico' || l === '*.ico'), '.assetsignore must not exclude favicon.ico');
+    const res = await fetch(`${base}/favicon.ico`);
+    eq(res.status, 200, 'favicon.ico served');
+    eq(res.headers.get('content-type'), 'image/x-icon', 'favicon.ico content type');
+
+    // worker.js: /404 and /404.html answer with the 404 page and a real 404 status; everything else is unchanged
+    const src = fs.readFileSync(path.join(ROOT, 'worker.js'), 'utf8');
+    const worker = (await import('data:text/javascript,' + encodeURIComponent(src))).default;
+    const seen = [];
+    const env = { ASSETS: { fetch: async (req) => {
+      const u = new URL(req.url); seen.push(u.pathname);
+      if (u.pathname === '/404') return new Response('<h1>Page Not Found</h1>', { status: 200, headers: { 'content-type': 'text/html', 'x-frame-options': 'DENY' } });
+      if (u.pathname === '/missing') return new Response('not found body', { status: 404 });
+      return new Response('ok', { status: 200, headers: { 'content-type': 'text/html' } });
+    } } };
+    for (const p of ['/404', '/404.html']) {
+      const r = await worker.fetch(new Request(`https://legendarydetailingmemphis.com${p}`), env);
+      eq(r.status, 404, `${p} status`);
+      eq(await r.text(), '<h1>Page Not Found</h1>', `${p} serves the 404 page body`);
+      eq(r.headers.get('x-frame-options'), 'DENY', `${p} keeps the asset headers`);
+    }
+    eq(seen.join(','), '/404,/404', 'both 404 routes fetch the /404 asset (no redirect)');
+    const home = await worker.fetch(new Request('https://legendarydetailingmemphis.com/'), env);
+    eq(home.status, 200, 'home passes through');
+    eq((await worker.fetch(new Request('https://legendarydetailingmemphis.com/missing'), env)).status, 404, 'unknown paths keep the asset 404');
+    const www = await worker.fetch(new Request('https://www.legendarydetailingmemphis.com/404?x=1'), env);
+    eq(www.status, 301, 'www still redirects first');
+    eq(www.headers.get('location'), 'https://legendarydetailingmemphis.com/404?x=1', 'www redirect keeps path and query');
   });
 
   await test('security: page works under the Content-Security-Policy from _headers', async () => {
